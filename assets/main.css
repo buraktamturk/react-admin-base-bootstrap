@@ -3,7 +3,7 @@
 @import "~sweetalert2/dist/sweetalert2.css";
 @import "~@fortawesome/fontawesome-free/css/all.min.css";
 
-// Image Picker
+/* Image Picker */
 @import url('~tingle.js/dist/tingle.css');
 @import url('~cropperjs/dist/cropper.css');
 
