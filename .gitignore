@@ -1,0 +1,10 @@
+node_modules/
+es/
+assets/app.css
+debug.log
+# redactor
+/.idea
+yarn.lock
+app.css.map
+lib/
+.nova

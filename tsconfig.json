@@ -1,0 +1,23 @@
+{
+    "compilerOptions": {
+      "outDir": "lib/esm",
+      "module": "esnext",
+      "target": "es6",
+      "lib": ["dom", "esnext.intl", "es2020"],
+      "jsx": "react",
+      "declaration": true,
+      "moduleResolution": "node",
+      "noUnusedLocals": false,
+      "noUnusedParameters": false,
+      "esModuleInterop": true,
+      "noImplicitReturns": false,
+      "noImplicitThis": true,
+      "noImplicitAny": false,
+      "strictNullChecks": true,
+      "suppressImplicitAnyIndexErrors": true,
+      "allowSyntheticDefaultImports": true,
+      "resolveJsonModule": true,
+      "strict": false
+    },
+    "include": ["src"]
+  }

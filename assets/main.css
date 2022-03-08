@@ -1,0 +1,63 @@
+
+@import "~nprogress/nprogress.css";
+@import "~sweetalert2/dist/sweetalert2.css";
+@import "~@fortawesome/fontawesome-free/css/all.min.css";
+
+// Image Picker
+@import url('~tingle.js/dist/tingle.css');
+@import url('~cropperjs/dist/cropper.css');
+
+.tingle-modal--visible {
+  z-index: 10000;
+}
+
+@media (max-width: 540px) {
+  .tingle-modal-box__footer .tingle-btn.tingle-btn--danger {
+	display:none;
+  }
+  
+  .tingle-modal-box__content {
+	padding: 1.5rem 3rem;
+  }
+
+  .tingle-modal-box {
+	width: 100%;
+  }
+
+  .price_in {
+	margin-bottom: 24px;
+  }
+}
+
+.tingle-modal.tingle-modal--visible {
+  display: flex;
+  flex-direction: column;
+}
+
+.tingle-modal-box {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.tingle-modal-box__content {
+  flex: 1;
+  position: relative;
+}
+
+.tingle-modal-box__content > div {
+  position: absolute;
+  left:0;
+  right:0;
+  top:0;
+  bottom:0;
+}
+
+.tingle-modal--overflow {
+  overflow-y: hidden !important;
+  padding-top: 0 !important;
+}
+
+.tingle-modal-box__footer {
+  text-align: center;
+}
