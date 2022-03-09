@@ -17,8 +17,10 @@ import CheckBox from './Components/CheckBox';
 import ErrorBoundary from './Components/ErrorBoundary';
 import { useMenuState, useIsMobile } from './Components/MenuState';
 import TopProgressBar from './Components/TopProgressBar';
+import ThemeProvider, { useTheme, useAllThemes } from './Components/ThemeProvider';
 
 export {
+    ThemeProvider, useTheme, useAllThemes,
     useIsMobile, useMenuState,
     TopProgressBar,
     CRUD, ModalEntityEditor, CRUDActions,
