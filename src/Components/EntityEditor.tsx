@@ -61,7 +61,7 @@ export default function EntityEditor({ entity, disabled, children, onSave, saveB
       </fieldset>
       <ValidationErrors />
       { savedAlert }
-      <LoadingButton className={saveButtonClassName || "col-md-12"} loading={loading} type="submit" color="primary">{ saveButtonText || <FormattedMessage id="ENTITY.SAVE" /> } <i className="fas fa-save fa-lg"></i></LoadingButton>
+      <LoadingButton className={saveButtonClassName || "col-md-12 mt-3"} loading={loading} type="submit" color="primary">{ saveButtonText || <FormattedMessage id="ENTITY.SAVE" /> } <i className="fas fa-save fa-lg"></i></LoadingButton>
     </Form>
   </ValidatorProvider>;
 }

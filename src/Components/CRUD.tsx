@@ -2,7 +2,7 @@ import React, { useCallback, useContext, useRef, useState } from 'react';
 import { ValidatorProvider } from "react-admin-base";
 import { FormattedMessage } from 'react-intl';
 import { Redirect, Route } from 'react-router-dom';
-import { Alert, Button, Form, Modal, ModalFooter, ModalHeader } from "reactstrap";
+import { Alert, Button, Col, Form, Modal, ModalFooter, ModalHeader, Row } from "reactstrap";
 import LoadingButton from '../Components/LoadingButton';
 import BootstrapDataTable, { Actions } from './BootstrapDataTable';
 
@@ -67,13 +67,19 @@ export function ModalEntityEditor({ entity, title, size, url, onReload, disabled
                         { children }
                     </fieldset>
                     <ModalFooter>
-                        { error && <Alert color="danger" toggle={() => setError(null)} style={{ display: 'block', width: '100%' }}>{ error }</Alert>}
-                        <LoadingButton block loading={loading} type="submit" color="primary">
-                            <i className="fas fa-save" />{' '}<FormattedMessage id="ENTITY.SAVE" />
-                        </LoadingButton>
-                        <Button block outline color="danger" onClick={(e) => { e.preventDefault(); (url ? setOpen(false) : onReload(null)); }}>
-                            <i className="fas fa-times-circle" />{' '}<FormattedMessage id="ENTITY.CANCEL" />
-                        </Button>
+                      { error && <Alert color="danger" toggle={() => setError(null)} style={{ display: 'block', width: '100%' }}>{ error }</Alert>}
+                      <Row className="w-100">
+                        <Col>
+                          <LoadingButton block loading={loading} type="submit" color="primary">
+                              <i className="fas fa-save" />{' '}<FormattedMessage id="ENTITY.SAVE" />
+                          </LoadingButton>
+                        </Col>
+                        <Col>
+                          <Button block outline color="danger" onClick={(e) => { e.preventDefault(); (url ? setOpen(false) : onReload(null)); }}>
+                              <i className="fas fa-times-circle" />{' '}<FormattedMessage id="ENTITY.CANCEL" />
+                          </Button>
+                        </Col>
+                      </Row>
                     </ModalFooter>
                 </Form>
             </ValidatorProvider>

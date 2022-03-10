@@ -137,7 +137,7 @@ export default function BootstrapTable({url, bordered, noStrip, defaultParams, a
                         </Col>
                     </Row>
                 </CardHeader>
-                    {data === null ? <Alert className="text-center mb-0 " color="warning"><i className="fas fa-spinner fa-lg fa-spin"></i></Alert> : !data.length ? <Alert className="text-center" color="danger">
+                    {data === null ? <Alert className="text-center mb-0 mx-3 " color="warning"><i className="fas fa-spinner fa-lg fa-spin"></i></Alert> : !data.length ? <Alert className="text-center mx-3" color="danger">
                         <i className="far fa-times-circle fa-lg"></i> <FormattedMessage id="NO_DATA_IS_AVAILABLE"/>
                     </Alert> : <Table hover bordered={bordered} striped={!noStrip} responsive size="md" className="mb-0 dataTable">
                         {children[0]}
