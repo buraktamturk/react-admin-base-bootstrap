@@ -8,6 +8,7 @@ export function useIsMobile() {
 
 export function useMenuState() {
 	const isMobile = useIsMobile();
+	
 	const state = useReducer(a => !a, !isMobile);
 	const [ isOpen, toggleOpen ] = state;
 

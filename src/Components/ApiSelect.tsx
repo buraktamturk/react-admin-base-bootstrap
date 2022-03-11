@@ -102,6 +102,8 @@ export default function ApiSelect(props) {
 
     return <Component
         {...props}
+        className='react-select-container'
+        classNamePrefix="react-select"
         onCreateOption={(onCreateOption && handleCreateOption) || null}
         getNewOptionData={onCreateOption ? getNewOptionData ? getNewOptionData : (inputValue) =>( { [nameKey || 'name']: inputValue, __isNew__: true }) : null}
         inputValue={search}

@@ -61,3 +61,37 @@
 .tingle-modal-box__footer {
   text-align: center;
 }
+
+.back-btn-shown {
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  width: 30px;
+  height: 30px;
+  background-color: black;
+  border: 1px solid white;
+  box-shadow: 0 10px 30px rgba(82, 85, 90, 0.2);
+  color: white;
+  text-align: center;
+  cursor: pointer;
+  line-height: 25px;
+  font-size: 20px;
+}
+
+.back-btn-shown span {
+  display: none;
+}
+
+.back-btn-shown:hover span {
+  position: absolute;
+  top: 0;
+  right: 35px;
+  width: 74px;
+  margin-left: -37px;
+  display: block;
+  background-color: black;
+  color: white;
+  font-size: 12px;
+  border: 1px solid black;
+  box-shadow: 0 10px 40px rgba(82, 85, 90, 0.2);
+}
