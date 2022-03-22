@@ -19,17 +19,17 @@ export default function BootstrapPagination({ className, currentPage, pageCount,
             activePage={currentPage}
             pageCount={pageCount}
             showPages={15}
-            prevPage={index => <PaginationItem onClick={() => onPageChange(index)}><PaginationLink previous tag="button">&laquo;</PaginationLink></PaginationItem>}
+            prevPage={index => <PaginationItem onClick={() => onPageChange(index)}><PaginationLink previous tag="button" type="button">&laquo;</PaginationLink></PaginationItem>}
 
             page={index => <PaginationItem key={index} active={currentPage === index}>
-                <PaginationLink tag="button" onClick={() => onPageChange(index)}>{index}</PaginationLink>
+                <PaginationLink tag="button" type="button" onClick={() => onPageChange(index)}>{index}</PaginationLink>
             </PaginationItem>}
 
             nextPage={index => <PaginationItem
-                onClick={() => onPageChange(index)}><PaginationLink next tag="button">&raquo;</PaginationLink></PaginationItem>}
+                onClick={() => onPageChange(index)}><PaginationLink next tag="button" type="button">&raquo;</PaginationLink></PaginationItem>}
 
             dots={index => <PaginationItem
-                onClick={() => onPageChange(index)} active={currentPage === index}><PaginationLink tag="button">{index}</PaginationLink></PaginationItem>}
+                onClick={() => onPageChange(index)} active={currentPage === index}><PaginationLink tag="button" type="button">{index}</PaginationLink></PaginationItem>}
         />
     </Pagination>;
 }

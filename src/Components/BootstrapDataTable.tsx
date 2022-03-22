@@ -114,9 +114,9 @@ export default function BootstrapTable({url, bordered, noStrip, defaultParams, a
             <DataContextProvider value={fetchData}>
                 <CardHeader>
                     <Row>
-                        {add && <Col xs="12" md="2"><Link to={add} className="btn btn-primary font-xl btn-lg d-block"><i className="fa fa-plus"/></Link></Col>}
+                        {add && <Col xs="12" md="2"><Link to={add} className="btn btn-primary font-xl d-block"><i className="fa fa-plus"/></Link></Col>}
                         <Col md="2">
-                            <Input type="select" bsSize="lg" value={itemPerPage.toString()} onChange={a => setItemPerPage(+a.currentTarget.value)}>
+                            <Input type="select" value={itemPerPage.toString()} onChange={a => setItemPerPage(+a.currentTarget.value)}>
                                 <option value="1">1</option>
                                 <option value="20">20</option>
                                 <option value="50">50</option>
@@ -131,14 +131,13 @@ export default function BootstrapTable({url, bordered, noStrip, defaultParams, a
                             <Input
                                 placeholder={intl.formatMessage({id: "SEARCH"})} type="text"
                                 value={params.query || ''}
-                                bsSize="lg"
                                 onChange={e => setParams({...params, query: e.currentTarget.value})}
                             />
                         </Col>
                     </Row>
                 </CardHeader>
-                    {data === null ? <Alert className="text-center mb-0 mx-3 " color="warning"><i className="fas fa-spinner fa-lg fa-spin"></i></Alert> : !data.length ? <Alert className="text-center mx-3" color="danger">
-                        <i className="far fa-times-circle fa-lg"></i> <FormattedMessage id="NO_DATA_IS_AVAILABLE"/>
+                    {data === null ? <Alert className="text-center mb-0 mx-3 " color="warning"><i className="fas fa-spinner fa-spin"></i></Alert> : !data.length ? <Alert className="text-center mx-3" color="danger">
+                        <i className="far fa-times-circle"></i> <FormattedMessage id="NO_DATA_IS_AVAILABLE"/>
                     </Alert> : <Table hover bordered={bordered} striped={!noStrip} responsive size="md" className="mb-0 dataTable">
                         {children[0]}
                         <tbody>
