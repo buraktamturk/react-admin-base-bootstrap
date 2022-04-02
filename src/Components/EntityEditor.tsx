@@ -4,6 +4,7 @@ import { FormattedMessage } from "react-intl";
 import { Alert, Form } from 'reactstrap';
 import LoadingButton from "../Components/LoadingButton";
 import { ValidationErrors } from './Validator';
+import { Navigate } from 'react-router-dom';
 
 type EntityEditorParams = {
     entity: any;
@@ -15,7 +16,7 @@ type EntityEditorParams = {
 };
 
 export default function EntityEditor({ entity, disabled, children, onSave, saveButtonClassName, saveButtonText }: EntityEditorParams) {
-  const [ _1, _2, save, loading ] = entity;
+  const [ data, _2, save, loading ] = entity;
 
   const [ saved, setSaved ] = useState(false);
   const [ error, setError ] = useState<any>(false);

@@ -1,7 +1,7 @@
 import React, { useCallback, useContext, useRef, useState } from 'react';
 import { ValidatorProvider } from "react-admin-base";
 import { FormattedMessage } from 'react-intl';
-import { Redirect, Route } from 'react-router-dom';
+import { Navigate, Routes, useParams, Route } from 'react-router-dom';
 import { Alert, Button, Col, Form, Modal, ModalFooter, ModalHeader, Row } from "reactstrap";
 import LoadingButton from '../Components/LoadingButton';
 import BootstrapDataTable, { Actions } from './BootstrapDataTable';
@@ -56,7 +56,7 @@ export function ModalEntityEditor({ entity, title, size, url, onReload, disabled
     }, [save, saved, error, onReload, url]);
 
     return <>
-        { (saved || !open) && url && <Redirect to={url} />}
+        { (saved || !open) && url && <Navigate to={url} replace />}
         <Modal isOpen size={size} toggle={() => url ? setOpen(false) : onReload(null)} fade={false}>
             { title && <ModalHeader toggle={() => url ? setOpen(false) : onReload(null)}>
                 <b>{ title }</b>
@@ -104,9 +104,14 @@ export function CRUDActions({ id, edit, del, children }: CrudActionProps) {
     </Actions>;
 }
 
+function ComponentWrapper({ Component, ...props }) {
+  const { id } = useParams();
+  return <Component {...props} id={id} />;
+}
+
 export default function CRUD(props) {
     const ref = useRef(null as any);
-    const { id, url, apiUrl, Component, defaultParams, noAdd } = props;
+    const { url, apiUrl, Component, defaultParams, noAdd } = props;
 
     var reload = useCallback(async function() {
         if (ref.current) {
@@ -115,9 +120,10 @@ export default function CRUD(props) {
     }, [ref]);
 
     return <UrlContext.Provider value={url}>
-        { !noAdd && <Route path={url+"/create"} render={props => <Component url={url} onReload={reload} {...(defaultParams || {})} />} /> }
-        <Route path={url+"/:id/edit"} render={props => <Component url={url} onReload={reload} id={props.match.params.id} {...(defaultParams || {})} />} />
-        { id && <Route path={url+"/edit"} render={props => <Component url={url} onReload={reload} id={id} {...(defaultParams || {})} />} />}
-        <BootstrapDataTable innerRef={ref} add={!noAdd && (url+"/create")} {...props} url={apiUrl || url} />
+        <Routes>
+          { !noAdd && <Route path="create" element={<ComponentWrapper Component={Component} url={url} onReload={reload} {...(defaultParams || {})} />} /> }
+          <Route path=":id/edit" element={<ComponentWrapper Component={Component} url={url} onReload={reload} {...(defaultParams || {})} />} />
+        </Routes>
+        <BootstrapDataTable innerRef={ref} add={!noAdd && "create"} {...props} url={apiUrl || url} />
     </UrlContext.Provider>;
 }
