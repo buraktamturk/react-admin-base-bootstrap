@@ -18,10 +18,12 @@ import ErrorBoundary from './Components/ErrorBoundary';
 import { useMenuState, useIsMobile } from './Components/MenuState';
 import TopProgressBar from './Components/TopProgressBar';
 import ThemeProvider, { useTheme, useAllThemes } from './Components/ThemeProvider';
+import StepList, { StepItem } from './Components/StepList';
 
 export {
     ThemeProvider, useTheme, useAllThemes,
     useIsMobile, useMenuState,
+    StepList, StepItem,
     TopProgressBar,
     CRUD, ModalEntityEditor, CRUDActions,
     Relative,
