@@ -1,5 +1,5 @@
 import React, { createContext, Dispatch, useContext, useEffect, useMemo, useReducer, useRef } from "react";
-import { useApp } from "react-admin-base";
+import { useApp, useLocalStorage } from "react-admin-base";
 
 const ThemeContext = createContext(null as any);
 const AllThemesContext = createContext(null as any);
@@ -10,19 +10,6 @@ export function useTheme() {
 
 export function useAllThemes() {
 	return useContext(AllThemesContext);	
-}
-
-function useLocalStorage(key: string) : [string, Dispatch<string>] {
-	const app = useApp();
-	
-	const _key = app.id + '_' + key;
-	
-	const previousValue = useMemo(() => localStorage.getItem(_key), [_key]);
-	
-	return useReducer((_: string, newValue) => {
-		localStorage.setItem(_key, newValue);
-		return newValue;
-	}, previousValue);
 }
 
 export default function ThemeProvider({ themes, defaultTheme, children }) {
