@@ -1,6 +1,6 @@
 {
   "name": "react-admin-base-bootstrap",
-  "version": "0.7.4",
+  "version": "0.7.5",
   "description": "",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -37,7 +37,7 @@
     "modal-cropper": "^1.2.3",
     "nprogress": "^0.2.0",
     "prettysize": "^2.0.0",
-    "react-admin-base": "^0.7.1",
+    "react-admin-base": "^0.7.2",
     "react-responsive": "^8.2.0",
     "react-select": "^5.2.2",
     "reactstrap": "^9.0.1",

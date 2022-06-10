@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
-import { DataContextProvider, useAuth, useDataTable } from 'react-admin-base';
+import { DataContextProvider, RefreshScope, useAuth, useDataTable } from 'react-admin-base';
 import { FormattedMessage, useIntl } from "react-intl";
 import { Link } from 'react-router-dom';
 import { Alert, Button, Card, CardFooter, CardHeader, Col, Input, Row, Table } from 'reactstrap';
@@ -77,7 +77,7 @@ export function Column(props) {
 export default function BootstrapTable({url, bordered, noStrip, defaultParams, add, children, innerRef, body}: any) {
     var state = useState({sort: 'id', ...defaultParams});
     const [params, setParams] = state;
-    const [page, lastPage, setPage, data, itemPerPage, setItemPerPage] = useDataTable(url, params, body);
+    const [page, lastPage, setPage, data, itemPerPage, setItemPerPage, update] = useDataTable(url, params, body);
     const intl = useIntl();
     const [ api ] = useAuth();
 
@@ -98,7 +98,7 @@ export default function BootstrapTable({url, bordered, noStrip, defaultParams, a
             };
         }
     }, [setParams, innerRef]);
-
+    
     const fetchData = useCallback(async function(extraParams) {
         if (body) {
             const data = await api.tokenized.post(url, body, { params: { ...params,  ...(extraParams || {}) } });
@@ -112,47 +112,49 @@ export default function BootstrapTable({url, bordered, noStrip, defaultParams, a
     return <Card>
         <DataTableContext.Provider value={state}>
             <DataContextProvider value={fetchData}>
-                <CardHeader>
-                    <Row>
-                        {add && <Col xs="12" md="2"><Link to={add} className="btn btn-primary font-xl d-block"><i className="fa fa-plus"/></Link></Col>}
-                        <Col md="2">
-                            <Input type="select" value={itemPerPage.toString()} onChange={a => setItemPerPage(+a.currentTarget.value)}>
-                                <option value="1">1</option>
-                                <option value="20">20</option>
-                                <option value="50">50</option>
-                                <option value="100">100</option>
-                                <option value="150">150</option>
-                                <option value="200">200</option>
-                                <option value="-1">{intl.formatMessage({id: "ALL"})}</option>
-                            </Input>
-                        </Col>
-                        {children[2]}
-                        <Col md="3" className="ms-auto">
-                            <Input
-                                placeholder={intl.formatMessage({id: "SEARCH"})} type="text"
-                                value={params.query || ''}
-                                onChange={e => setParams({...params, query: e.currentTarget.value})}
+                <RefreshScope update={update}>
+                    <CardHeader>
+                        <Row>
+                            {add && <Col xs="12" md="2"><Link to={add} className="btn btn-primary font-xl d-block"><i className="fa fa-plus"/></Link></Col>}
+                            <Col md="2">
+                                <Input type="select" value={itemPerPage.toString()} onChange={a => setItemPerPage(+a.currentTarget.value)}>
+                                    <option value="1">1</option>
+                                    <option value="20">20</option>
+                                    <option value="50">50</option>
+                                    <option value="100">100</option>
+                                    <option value="150">150</option>
+                                    <option value="200">200</option>
+                                    <option value="-1">{intl.formatMessage({id: "ALL"})}</option>
+                                </Input>
+                            </Col>
+                            {children[2]}
+                            <Col md="3" className="ms-auto">
+                                <Input
+                                    placeholder={intl.formatMessage({id: "SEARCH"})} type="text"
+                                    value={params.query || ''}
+                                    onChange={e => setParams({...params, query: e.currentTarget.value})}
+                                />
+                            </Col>
+                        </Row>
+                    </CardHeader>
+                        {data === null ? <Alert className="text-center mb-0 mx-3 " color="warning"><i className="fas fa-spinner fa-spin"></i></Alert> : !data.length ? <Alert className="text-center mx-3" color="danger">
+                            <i className="far fa-times-circle"></i> <FormattedMessage id="NO_DATA_IS_AVAILABLE"/>
+                        </Alert> : <Table hover bordered={bordered} striped={!noStrip} responsive size="md" className="mb-0 dataTable">
+                            {children[0]}
+                            <tbody>
+                            {data && data.map(children[1].props.children)}
+                            </tbody>
+                        </Table>}
+                    { lastPage > 1 && <CardFooter>
+                        <nav>
+                            <BootstrapPagination
+                                currentPage={page}
+                                pageCount={lastPage}
+                                onPageChange={index => setPage(index)}
                             />
-                        </Col>
-                    </Row>
-                </CardHeader>
-                    {data === null ? <Alert className="text-center mb-0 mx-3 " color="warning"><i className="fas fa-spinner fa-spin"></i></Alert> : !data.length ? <Alert className="text-center mx-3" color="danger">
-                        <i className="far fa-times-circle"></i> <FormattedMessage id="NO_DATA_IS_AVAILABLE"/>
-                    </Alert> : <Table hover bordered={bordered} striped={!noStrip} responsive size="md" className="mb-0 dataTable">
-                        {children[0]}
-                        <tbody>
-                        {data && data.map(children[1].props.children)}
-                        </tbody>
-                    </Table>}
-                { lastPage > 1 && <CardFooter>
-                    <nav>
-                        <BootstrapPagination
-                            currentPage={page}
-                            pageCount={lastPage}
-                            onPageChange={index => setPage(index)}
-                        />
-                    </nav>
-                </CardFooter> }
+                        </nav>
+                    </CardFooter> }
+                </RefreshScope>
             </DataContextProvider>
         </DataTableContext.Provider>
     </Card>;
