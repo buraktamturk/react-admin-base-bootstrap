@@ -9,7 +9,7 @@ function ErrorHandler({ error }) {
   </Alert>;
 }
 
-export default class ErrorBoundary extends React.Component {
+export default class ErrorBoundary extends React.Component<{ children: React.ReactNode }> {
   state = { hasError: false, error: null };
 
   static getDerivedStateFromError(error) {

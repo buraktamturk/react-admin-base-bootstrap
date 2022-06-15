@@ -7,6 +7,10 @@
 @import url('~tingle.js/dist/tingle.css');
 @import url('~cropperjs/dist/cropper.css');
 
+.password-str-bar ~ .invalid-feedback {
+  margin-top: -20px;
+}
+
 .tingle-modal--visible {
   z-index: 10000;
 }

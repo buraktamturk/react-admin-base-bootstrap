@@ -19,10 +19,14 @@ import { useMenuState, useIsMobile } from './Components/MenuState';
 import TopProgressBar from './Components/TopProgressBar';
 import ThemeProvider, { useTheme, useAllThemes } from './Components/ThemeProvider';
 import StepList, { StepItem } from './Components/StepList';
+import PasswordInput from './Components/PasswordInput';
+import DefaultValidatorOptions from './Components/DefaultValidatorOptions';
 
 export {
     ThemeProvider, useTheme, useAllThemes,
     useIsMobile, useMenuState,
+    DefaultValidatorOptions,
+    PasswordInput,
     StepList, StepItem,
     TopProgressBar,
     CRUD, ModalEntityEditor, CRUDActions,
