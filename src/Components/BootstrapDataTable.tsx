@@ -86,7 +86,7 @@ export default function BootstrapTable({url, bordered, noStrip, defaultParams, a
     useEffect(function () {
         if (ref.current !== defaultParams) {
             ref.current = defaultParams;
-            setParams(defaultParams);
+            setParams(params => ({ ...params, ...defaultParams }));
         }
     }, [defaultParams, ref, setParams]);
 
