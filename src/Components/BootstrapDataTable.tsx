@@ -64,10 +64,11 @@ export function Column(props) {
     return <th
         {...props}
         style={props.sort && {cursor: 'pointer'}}
-        onClick={props.sort && (() => setParams({
-            sort: sort,
+        onClick={props.sort && (() => setParams(params => ({
+            ...params,
+	    sort: sort,
             desc: params.sort === sort ? !params.desc : true
-        }))}
+        })))}
     >{props.children} {sort && params.sort && params.sort === sort ? params.desc ?
         <i className="fa fa-sort-down"/> :
         <i className="fa fa-sort-up"/> : ''}

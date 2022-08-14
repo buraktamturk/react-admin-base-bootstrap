@@ -33,6 +33,7 @@ function BootstrapPasswordInput({ className, value, onChange, disabled, placehol
 			onChange={a => onChange(a.currentTarget.value)}
 			disabled={disabled}
 			placeholder={placeholder}
+			autoComplete="new-password"
 		/>
 		<PasswordStrengthBar
 			className="password-str-bar"
@@ -86,6 +87,7 @@ export default function PasswordInput({ value, onChange, className, disabled, ic
 					value={password2 || ''}
 					onChange={a => setPassword2(a.currentTarget.value)}
 					disabled={disabled}
+					autoComplete="new-password"
 				/>
 			</Validator>
 		</FormGroup> }
