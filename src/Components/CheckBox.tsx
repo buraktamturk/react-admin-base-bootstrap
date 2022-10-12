@@ -5,7 +5,7 @@ interface CheckBoxProps extends InputProps {
     id: string;
     type?: "checkbox"|"radio";
     label?: React.ReactNode;
-    children: React.ReactNode;
+    children?: React.ReactNode;
 }
 
 export default function CheckBox(props: CheckBoxProps) {
