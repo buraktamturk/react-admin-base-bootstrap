@@ -4,7 +4,13 @@ import { FormattedMessage } from "react-intl";
 const IndexContext = React.createContext(0);
 const OnClickDataContext = React.createContext<[number, (a: Number) => void]>(null as any);
 
-export default function StepList({ active, setActive, children }: any) {
+type StepListProps = {
+    active: number;
+    setActive: (active: number) => {};
+    children: React.ReactNode;
+}
+
+export default function StepList({ active, setActive, children }: StepListProps) {
 	const onClickData = useMemo<[number, (a: Number) => void]>(() => [active, setActive], [active, setActive]);
 	
 	return <ul className="step step-sm step-icon-sm step step-inline step-item-between mb-3">
@@ -18,7 +24,13 @@ export default function StepList({ active, setActive, children }: any) {
 	</ul>;
 }
 
-export function StepItem({ title, translate, disabled }: any) {
+type StepItemProps = {
+    title?: string;
+    translate?: string;
+    disabled?: boolean;
+}
+
+export function StepItem({ title, translate, disabled }: StepItemProps) {
 	const index = useContext(IndexContext);
 	const [ activeStep, onClickParent ] = useContext(OnClickDataContext);
 	

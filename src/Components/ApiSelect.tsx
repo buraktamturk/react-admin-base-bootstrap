@@ -60,7 +60,25 @@ function IndicatorsContainer(props) {
 
 const Components = { Option, SingleValue, IndicatorsContainer };
 
-export default function ApiSelect(props) {
+export interface ApiSelectProps<Option> {
+    url?: string;
+    value: Option|Option[];
+    onChange: (a: Option|Option[]|null) => void;
+    getOptionLabel?: (a: any) => string;
+    getOptionValue?: (a: any) => string;
+    onCreateOption?: (a: string) => Option|Promise<Option>;
+    filter?: (a: Option) => boolean;
+    group?: (a: Option[]) => any[];
+    isMulti?: boolean;
+    idKey?: string;
+    nameKey?: string;
+    disabled?: boolean;
+    placeholder?: string;
+    staticOptions?: any[];
+    getNewOptionData?: (name: string, elem: React.ReactNode) => any|null;
+}
+
+export default function ApiSelect<Option>(props: ApiSelectProps<Option>) {
     const { disabled, url, getOptionLabel, getOptionValue, idKey, nameKey, filter, group, onCreateOption, getNewOptionData, isMulti, onChange, value, placeholder, staticOptions } = props;
     const intl = useIntl();
     const [ search, setSearch ] = useState('');
@@ -76,11 +94,14 @@ export default function ApiSelect(props) {
     }
 
     const handleCreateOption = useCallback(async function(input) {
+        if (!onCreateOption)
+            return null;
+
         setCreating(true);
         try {
             let option = await onCreateOption(input);
             if (isMulti) {
-                onChange((value || []).concat([option]));
+                onChange(((value as Option[]) || []).concat([option]));
             } else {
                 onChange(option);
             }
@@ -104,8 +125,8 @@ export default function ApiSelect(props) {
         {...props}
         className='react-select-container'
         classNamePrefix="react-select"
-        onCreateOption={(onCreateOption && handleCreateOption) || null}
-        getNewOptionData={onCreateOption ? getNewOptionData ? getNewOptionData : (inputValue) =>( { [nameKey || 'name']: inputValue, __isNew__: true }) : null}
+        onCreateOption={onCreateOption && handleCreateOption}
+        getNewOptionData={(onCreateOption && (getNewOptionData || ((inputValue) =>( { [nameKey || 'name']: inputValue, __isNew__: true })))) || undefined}
         inputValue={search}
         onInputChange={a => setSearch(a)}
         components={Components}
@@ -117,7 +138,6 @@ export default function ApiSelect(props) {
         isSearchable
         placeholder={placeholder || intl.formatMessage({ id: 'SELECT' })}
         options={!options ? [] : ((filter && options.filter(filter)) || options)}
-        isMenuOpen={isMenuOpen}
         onMenuOpen={onMenuOpen}
         onMenuClose={onMenuClose}
     />;

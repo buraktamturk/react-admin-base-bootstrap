@@ -7,12 +7,21 @@ import Swal from 'sweetalert2';
 import BootstrapPagination from "./BootstrapPagination";
 
 const DataTableContext = React.createContext(null as any);
+const RowDatasContext = React.createContext(null as any);
+const RowDataContext = React.createContext(null as any);
 
 export function useDataTableContext() {
     return useContext(DataTableContext);
 }
 
-export function Actions({edit, del, rowSpan, children} : {edit: any, del: any, rowSpan?:any, children?: any}) {
+type ActionsProp = {
+    edit?: string;
+    del?: string;
+    rowSpan?: number|undefined;
+    children?: React.ReactNode;
+};
+
+export function Actions({edit, del, rowSpan, children}: ActionsProp) {
     const [api] = useAuth();
     const [, setParams] = useContext(DataTableContext);
     const intl = useIntl();
@@ -75,14 +84,39 @@ export function Column(props) {
     </th>;
 }
 
-export default function BootstrapTable({url, bordered, noStrip, defaultParams, add, children, innerRef, body}: any) {
-    var state = useState({sort: 'id', ...defaultParams});
+export interface BootstrapTableProps {
+    url: string;
+    bordered?: boolean;
+    noStrip?: boolean;
+    defaultParams?: any;
+    body?: any;
+    add?: string;
+    children: any;
+    innerRef?: any;
+}
+
+interface RowRendererProps<Row> {
+    render: (row: Row) => React.ReactNode;
+}
+
+export function RowRenderer<Row>({render}: RowRendererProps<Row>) {
+    const rows = useContext(RowDatasContext);
+
+    return <tbody>
+        { rows.map(render) }
+    </tbody>;
+}
+
+export default function BootstrapTable({url, bordered, noStrip, defaultParams, add, children, innerRef, body}: BootstrapTableProps) {
+    const state = useState({sort: 'id', ...defaultParams});
     const [params, setParams] = state;
     const [page, lastPage, setPage, data, itemPerPage, setItemPerPage, update] = useDataTable(url, params, body);
     const intl = useIntl();
     const [ api ] = useAuth();
 
-    var ref = useRef(defaultParams);
+    console.log(children[1]);
+
+    const ref = useRef(defaultParams);
     useEffect(function () {
         if (ref.current !== defaultParams) {
             ref.current = defaultParams;
@@ -114,47 +148,49 @@ export default function BootstrapTable({url, bordered, noStrip, defaultParams, a
         <DataTableContext.Provider value={state}>
             <DataContextProvider value={fetchData}>
                 <RefreshScope update={update}>
-                    <CardHeader>
-                        <Row>
-                            {add && <Col xs="12" md="2"><Link to={add} className="btn btn-primary font-xl d-block"><i className="fa fa-plus"/></Link></Col>}
-                            <Col md="2">
-                                <Input type="select" value={itemPerPage.toString()} onChange={a => setItemPerPage(+a.currentTarget.value)}>
-                                    <option value="1">1</option>
-                                    <option value="20">20</option>
-                                    <option value="50">50</option>
-                                    <option value="100">100</option>
-                                    <option value="150">150</option>
-                                    <option value="200">200</option>
-                                    <option value="-1">{intl.formatMessage({id: "ALL"})}</option>
-                                </Input>
-                            </Col>
-                            {children[2]}
-                            <Col md="3" className="ms-auto">
-                                <Input
-                                    placeholder={intl.formatMessage({id: "SEARCH"})} type="text"
-                                    value={params.query || ''}
-                                    onChange={e => setParams({...params, query: e.currentTarget.value})}
+                    <RowDatasContext.Provider value={data}>
+                        <CardHeader>
+                            <Row>
+                                {add && <Col xs="12" md="2"><Link to={add} className="btn btn-primary font-xl d-block"><i className="fa fa-plus"/></Link></Col>}
+                                <Col md="2">
+                                    <Input type="select" value={itemPerPage.toString()} onChange={a => setItemPerPage(+a.currentTarget.value)}>
+                                        <option value="1">1</option>
+                                        <option value="20">20</option>
+                                        <option value="50">50</option>
+                                        <option value="100">100</option>
+                                        <option value="150">150</option>
+                                        <option value="200">200</option>
+                                        <option value="-1">{intl.formatMessage({id: "ALL"})}</option>
+                                    </Input>
+                                </Col>
+                                {children[2]}
+                                <Col md="3" className="ms-auto">
+                                    <Input
+                                        placeholder={intl.formatMessage({id: "SEARCH"})} type="text"
+                                        value={params.query || ''}
+                                        onChange={e => setParams({...params, query: e.currentTarget.value})}
+                                    />
+                                </Col>
+                            </Row>
+                        </CardHeader>
+                            {data === null ? <Alert className="text-center mb-0 mx-3 " color="warning"><i className="fas fa-spinner fa-spin"></i></Alert> : !data.length ? <Alert className="text-center mx-3" color="danger">
+                                <i className="far fa-times-circle"></i> <FormattedMessage id="NO_DATA_IS_AVAILABLE"/>
+                            </Alert> : <Table hover bordered={bordered} striped={!noStrip} responsive size="md" className="mb-0 dataTable">
+                                {children[0]}
+                                {children[1].type === "tbody" ? <tbody>
+                                    {data && data.map(children[1].props.children)}
+                                </tbody> : children[1]}
+                            </Table>}
+                        { lastPage > 1 && <CardFooter>
+                            <nav>
+                                <BootstrapPagination
+                                    currentPage={page}
+                                    pageCount={lastPage}
+                                    onPageChange={index => setPage(index)}
                                 />
-                            </Col>
-                        </Row>
-                    </CardHeader>
-                        {data === null ? <Alert className="text-center mb-0 mx-3 " color="warning"><i className="fas fa-spinner fa-spin"></i></Alert> : !data.length ? <Alert className="text-center mx-3" color="danger">
-                            <i className="far fa-times-circle"></i> <FormattedMessage id="NO_DATA_IS_AVAILABLE"/>
-                        </Alert> : <Table hover bordered={bordered} striped={!noStrip} responsive size="md" className="mb-0 dataTable">
-                            {children[0]}
-                            <tbody>
-                            {data && data.map(children[1].props.children)}
-                            </tbody>
-                        </Table>}
-                    { lastPage > 1 && <CardFooter>
-                        <nav>
-                            <BootstrapPagination
-                                currentPage={page}
-                                pageCount={lastPage}
-                                onPageChange={index => setPage(index)}
-                            />
-                        </nav>
-                    </CardFooter> }
+                            </nav>
+                        </CardFooter> }
+                    </RowDatasContext.Provider>
                 </RefreshScope>
             </DataContextProvider>
         </DataTableContext.Provider>

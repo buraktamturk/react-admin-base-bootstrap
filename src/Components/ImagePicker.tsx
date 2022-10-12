@@ -1,15 +1,15 @@
 
 import React, { useCallback } from 'react';
-import SingleFilePicker from './SingleFilePicker';
+import SingleFilePicker, { SingleFilePickerProps } from './SingleFilePicker';
 
-type ImagePickerProps = {
+interface ImagePickerProps extends SingleFilePickerProps {
   width: number;
   height: number;
   type: string;
   exact?: boolean;
-};
+}
 
-export default function ImagePicker(props) {
+export default function ImagePicker(props: ImagePickerProps) {
   const { width, height, type, exact } = props;
 
   const transform = useCallback(async function(file) {

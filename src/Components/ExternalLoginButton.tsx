@@ -3,7 +3,14 @@ import React from 'react';
 import { useApp, useAuth, useLogin } from 'react-admin-base';
 import { FormattedMessage } from 'react-intl';
 
-export default function ExternalLoginButton({ id, icon, name, url }) {
+type ExternalLoginButtonProps = {
+    id: string;
+    icon?: string;
+    name: string;
+    url: string;
+};
+
+export default function ExternalLoginButton({ id, icon, name, url }: ExternalLoginButtonProps) {
   const { endpoint } = useApp();
   const [{ client_id }] = useAuth();
   const { login } = useLogin();

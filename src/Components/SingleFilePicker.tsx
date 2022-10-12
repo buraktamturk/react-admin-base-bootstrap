@@ -3,7 +3,7 @@ import React, { useCallback, useMemo } from 'react';
 import { useUploadController } from "react-admin-base";
 import FilePickerCore from "./FilePickerCore";
 
-type SingleFilePickerProps = {
+export interface SingleFilePickerProps {
     disabled?: boolean;
     className?: string;
     accepts?: string;

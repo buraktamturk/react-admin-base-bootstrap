@@ -17,7 +17,7 @@ function ValidatorCore(name: string, value: any, type: any, children: any) {
 type ValidatorProps = {
   name: string;
   type: any;
-  children: any;
+  children: JSX.Element;
 };
 
 export function Validator({ name, type, children }: ValidatorProps) {

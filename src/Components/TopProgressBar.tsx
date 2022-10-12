@@ -1,8 +1,12 @@
 import NProgress from 'nprogress';
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useAuth } from "react-admin-base";
 
-export default function TopProgressBar({ children }) {
+type TopProgressBarProps = {
+    children: React.ReactNode;
+};
+
+export default function TopProgressBar({ children }: TopProgressBarProps): React.ReactNode {
 	const [ api ] = useAuth();
 
 	useEffect(function() {

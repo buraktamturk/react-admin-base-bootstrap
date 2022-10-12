@@ -3,7 +3,11 @@ import { ValidatorOptionProvider } from "react-admin-base";
 import { useIntl } from "react-intl";
 import zxcvbn from 'zxcvbn';
 
-export default function DefaultValidatorOptions({ children }) {
+type DefaultValidatorOptionsProps = {
+  children: React.ReactNode;
+};
+
+export default function DefaultValidatorOptions({ children }: DefaultValidatorOptionsProps) {
 	const intl = useIntl();
 	
 	const options = useMemo(() => ({

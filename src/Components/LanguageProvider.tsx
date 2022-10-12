@@ -20,7 +20,14 @@ export function useLanguage() {
   return useContext(LanguageContext);
 }
 
-export default function LanguageProvider({ defaultLanguage, languages, loader, children }) {
+type LanguageProviderProps = {
+    defaultLanguage: string;
+    languages: any[];
+    loader?: (language: any) => any;
+    children: React.ReactNode;
+};
+
+export default function LanguageProvider({ defaultLanguage, languages, loader, children }: LanguageProviderProps) {
   const app = useApp();
   
   const preferredLanguage = (navigator.languages && navigator.languages[0]) || navigator.language;

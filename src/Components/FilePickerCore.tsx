@@ -5,7 +5,7 @@ import {Button} from "reactstrap";
 import { useApp, useFilePicker, usePreviewComponent } from "react-admin-base";
 import {FormattedMessage} from "react-intl";
 
-var photo_ext = ["png", "jpg", "jpeg", "svg"];
+const photo_ext = ["png", "jpg", "jpeg", "svg"];
 
 function is_photo(name) {
   return photo_ext.indexOf(name.split('.')[1]) !== -1;
@@ -15,11 +15,15 @@ function is_absolute(url) {
     if (url.indexOf("blob:") === 0)
         return false;
 
-    var pat = /^https?:\/\//i;
+    const pat = /^https?:\/\//i;
     return !pat.test(url);
 }
 
-export function Relative({ children }) {
+type RelativeProps = {
+    children: JSX.Element;
+};
+
+export function Relative({ children }: RelativeProps) {
     const app = useApp();
 
     if (!children)
@@ -34,8 +38,8 @@ export function Relative({ children }) {
 }
 
 export function Preview({ value }) {
-    var name = value.$name;
-    var src = value.$blob_url || value.$src;
+    const name = value.$name;
+    const src = value.$blob_url || value.$src;
 
     if (is_photo(name)) {
         return <div className="mt-2">
