@@ -22,7 +22,7 @@ export function useLanguage() {
 
 type LanguageProviderProps = {
     defaultLanguage: string;
-    languages: any[];
+    languages: any;
     loader?: (language: any) => any;
     children: React.ReactNode;
 };

@@ -1,12 +1,12 @@
 import React from "react";
-import { FormGroup, Input, Label } from "reactstrap";
+import { FormGroup, Input, InputProps, Label } from "reactstrap";
 
-type CheckBoxProps = {
+interface CheckBoxProps extends InputProps {
     id: string;
     type?: "checkbox"|"radio";
     label?: React.ReactNode;
     children: React.ReactNode;
-};
+}
 
 export default function CheckBox(props: CheckBoxProps) {
 	return <FormGroup check>

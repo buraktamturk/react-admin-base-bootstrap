@@ -95,11 +95,11 @@ export interface BootstrapTableProps {
     innerRef?: any;
 }
 
-interface RowRendererProps<Row> {
+interface RowRendererProps<Row = any> {
     render: (row: Row) => React.ReactNode;
 }
 
-export function RowRenderer<Row>({render}: RowRendererProps<Row>) {
+export function RowRenderer<Row = any>({render}: RowRendererProps<Row>) {
     const rows = useContext(RowDatasContext);
 
     return <tbody>

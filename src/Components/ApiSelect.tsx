@@ -60,7 +60,7 @@ function IndicatorsContainer(props) {
 
 const Components = { Option, SingleValue, IndicatorsContainer };
 
-export interface ApiSelectProps<Option> {
+export interface ApiSelectProps<Option = any> {
     url?: string;
     value: Option|Option[];
     onChange: (a: Option|Option[]|null) => void;
@@ -78,7 +78,7 @@ export interface ApiSelectProps<Option> {
     getNewOptionData?: (name: string, elem: React.ReactNode) => any|null;
 }
 
-export default function ApiSelect<Option>(props: ApiSelectProps<Option>) {
+export default function ApiSelect<Option = any>(props: ApiSelectProps<Option>) {
     const { disabled, url, getOptionLabel, getOptionValue, idKey, nameKey, filter, group, onCreateOption, getNewOptionData, isMulti, onChange, value, placeholder, staticOptions } = props;
     const intl = useIntl();
     const [ search, setSearch ] = useState('');
