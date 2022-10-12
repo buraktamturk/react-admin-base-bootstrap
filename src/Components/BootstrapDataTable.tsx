@@ -114,8 +114,6 @@ export default function BootstrapTable({url, bordered, noStrip, defaultParams, a
     const intl = useIntl();
     const [ api ] = useAuth();
 
-    console.log(children[1]);
-
     const ref = useRef(defaultParams);
     useEffect(function () {
         if (ref.current !== defaultParams) {
