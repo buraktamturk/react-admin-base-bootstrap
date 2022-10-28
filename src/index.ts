@@ -21,6 +21,7 @@ import ThemeProvider, { useTheme, useAllThemes } from './Components/ThemeProvide
 import StepList, { StepItem } from './Components/StepList';
 import PasswordInput from './Components/PasswordInput';
 import DefaultValidatorOptions from './Components/DefaultValidatorOptions';
+import DragAndDropArrow from './Components/DragAndDropArrow';
 
 export {
     ThemeProvider, useTheme, useAllThemes,
@@ -47,5 +48,6 @@ export {
     RowRenderer,
     LanguageProvider, useLanguage, LanguageSwitcher,
     ErrorBoundary,
-    CheckBox
+    CheckBox,
+    DragAndDropArrow
 };

@@ -2,8 +2,9 @@
 import React, { useCallback } from 'react';
 import prettysize from 'prettysize';
 import {Button} from "reactstrap";
-import { useApp, useFilePicker, usePreviewComponent } from "react-admin-base";
+import { useApp, useFilePicker, usePreviewComponent, DragAndDropItem } from "react-admin-base";
 import {FormattedMessage} from "react-intl";
+import DragAndDropArrow from './DragAndDropArrow';
 
 const photo_ext = ["png", "jpg", "jpeg", "svg"];
 
@@ -52,7 +53,7 @@ export function Preview({ value }) {
     return null;
 }
 
-export default function FilePickerCore({ disabled, className, accepts, value, onNotify, children, transform } : { disabled?: any, className?: any, accepts?: any, value?:any, onNotify?:any, children?:any, transform?:any }) {
+export default function FilePickerCore({ disabled, index, move, className, accepts, value, onNotify, children, transform } : { disabled?: any, index?: number, move?: any, className?: any, accepts?: any, value?:any, onNotify?:any, children?:any, transform?:any }) {
     const [ uc, cancel, pick ] = useFilePicker(value, onNotify);
     const CustomPreview = usePreviewComponent() || Preview;
 
@@ -78,13 +79,16 @@ export default function FilePickerCore({ disabled, className, accepts, value, on
             { children && children(uc) }
         </div>;
     } else if(uc.$state === 3) { // yuklendi
-        return <div className={className}>
-            { !disabled && <Button color="danger" outline size="sm" onClick={cancel}><i className="fa fa-trash" /></Button> }
-            &nbsp;<Relative><a href={uc.$src} target="_blank" className="btn btn-sm btn-outline-primary"><i className="fa fa-download" /> { uc.name }</a></Relative>
-            <span>&nbsp;({ prettysize(uc.$size) })</span>
-            { <CustomPreview value={uc} /> }
-            { children && children(uc) }
-        </div>;
+        return <DragAndDropItem item={index}>
+            <div className={className}>
+                <DragAndDropArrow className="me-1" />
+                { !disabled && <Button color="danger" outline size="sm" onClick={cancel}><i className="fa fa-trash" /></Button> }
+                &nbsp;<Relative><a href={uc.$src} target="_blank" className="btn btn-sm btn-outline-primary"><i className="fa fa-download" /> { uc.name }</a></Relative>
+                <span>&nbsp;({ prettysize(uc.$size) })</span>
+                { <CustomPreview value={uc} /> }
+                { children && children(uc) }
+            </div>
+        </DragAndDropItem>;
     }
 
     return null;
