@@ -1,5 +1,5 @@
 import React, { createContext, Dispatch, useContext, useEffect, useMemo, useReducer, useRef } from "react";
-import { useApp, useLocalStorage } from "react-admin-base";
+import { useLocalStorage } from "react-admin-base";
 
 const ThemeContext = createContext(null as any);
 const AllThemesContext = createContext(null as any);

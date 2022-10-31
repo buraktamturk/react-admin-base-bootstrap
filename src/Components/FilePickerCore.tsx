@@ -9,7 +9,8 @@ import DragAndDropArrow from './DragAndDropArrow';
 const photo_ext = ["png", "jpg", "jpeg", "svg"];
 
 function is_photo(name) {
-  return photo_ext.indexOf(name.split('.')[1]) !== -1;
+    const sp = (name || '').split('.');
+    return photo_ext.indexOf((sp[sp.length - 1] || '').toLowerCase()) !== -1;
 }
 
 function is_absolute(url) {
@@ -39,7 +40,7 @@ export function Relative({ children }: RelativeProps) {
 }
 
 export function Preview({ value }) {
-    const name = value.$name;
+    const name = value.$name || value.name;
     const src = value.$blob_url || value.$src;
 
     if (is_photo(name)) {

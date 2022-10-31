@@ -5,6 +5,8 @@ import { Navigate, Routes, useParams, Route } from 'react-router-dom';
 import { Alert, Button, Col, Form, Modal, ModalFooter, ModalHeader, Row } from "reactstrap";
 import LoadingButton from '../Components/LoadingButton';
 import BootstrapDataTable, { Actions, BootstrapTableProps } from './BootstrapDataTable';
+import BootstrapModal from './BootstrapModal';
+import {useBootstrapOptions} from "./BootstrapOptions";
 
 type ModalEntityEditorParams = {
     entity: any;
@@ -57,7 +59,7 @@ export function ModalEntityEditor({ entity, title, size, url, onReload, disabled
 
     return <>
         { (saved || !open) && url && <Navigate to={url} replace />}
-        <Modal isOpen size={size} toggle={() => url ? setOpen(false) : onReload(null)} fade={false}>
+        <BootstrapModal isOpen size={size} toggle={() => url ? setOpen(false) : onReload(null)} fade={false}>
             { title && <ModalHeader toggle={() => url ? setOpen(false) : onReload(null)}>
                 <b>{ title }</b>
             </ModalHeader> }
@@ -83,7 +85,7 @@ export function ModalEntityEditor({ entity, title, size, url, onReload, disabled
                     </ModalFooter>
                 </Form>
             </ValidatorProvider>
-        </Modal>
+        </BootstrapModal>
     </>;
 }
 
@@ -130,6 +132,8 @@ export default function CRUD(props: CRUDProps) {
           { !noAdd && <Route path="create" element={<ComponentWrapper Component={Component} url={url} onReload={reload} {...(defaultParams || {})} />} /> }
           <Route path=":id/edit" element={<ComponentWrapper Component={Component} url={url} onReload={reload} {...(defaultParams || {})} />} />
         </Routes>
-        <BootstrapDataTable innerRef={ref} add={(!noAdd && "create") || undefined} {...props} url={apiUrl || url} />
+        <BootstrapDataTable innerRef={ref} add={(!noAdd && "create") || undefined} {...props} url={apiUrl || url}>
+            {props.children}
+        </BootstrapDataTable>
     </UrlContext.Provider>;
 }

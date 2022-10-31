@@ -4,7 +4,6 @@ import { FormattedMessage } from "react-intl";
 import { Alert, Form } from 'reactstrap';
 import LoadingButton from "../Components/LoadingButton";
 import { ValidationErrors } from './Validator';
-import { Navigate } from 'react-router-dom';
 
 type EntityEditorParams = {
     entity: any;

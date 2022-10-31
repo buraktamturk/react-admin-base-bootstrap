@@ -2,7 +2,6 @@ import React from 'react';
 import {FormattedMessage} from "react-intl";
 
 export default class GoToTop extends React.Component {
-
     state = {show: false};
 
     scrollTop(e) {
@@ -12,7 +11,7 @@ export default class GoToTop extends React.Component {
     }
 
     handleScroll(e) {
-        var newShow = window.scrollY > 100;
+        const newShow = window.scrollY > 100;
         if (newShow !== this.state.show) {
             this.setState({show: newShow});
         }
