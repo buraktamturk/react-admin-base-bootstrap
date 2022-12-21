@@ -1359,22 +1359,22 @@
 }
 
 .react-select-container .react-select__control {
-    background-color: var(--bs-body-bg);
-    border-color: var(--bs-gray-300);
+    background-color: var(--bs-form-select-bg);
+    border-color: var(--bs-form-select-border-color);
     transition: none;
 }
 
 .react-select-container .react-select__control:hover {
-    border-color: var(--bs-gray-300);
+    border-color: var(--bs-form-select-border-color);
 }
 
 .react-select-container .react-select__menu {
-    background-color: var(--bs-body-bg);
-    border: 1px solid var(--bs-gray-300);
+    background-color: var(--bs-form-select-bg);
+    border: 1px solid var(--bs-form-select-border-color);
 }
 
 .react-select-container .react-select__option {
-    background-color: var(--bs-body-bg);
+    background-color: var(--bs-form-select-bg);
 }
 
 .react-select-container .react-select__option:hover {
@@ -1382,7 +1382,7 @@
 }
 
 .react-select-container .react-select__option--is-selected {
-    color: var(--bs-dark);
+    color: var(--bs-form-selected-color);
 }
 
 .react-select-container .react-select__indicator-separator {
@@ -1392,5 +1392,5 @@
 .react-select-container .react-select__placeholder,
 .react-select-container .react-select__single-value
 {
-    color: var(--bs-gray-700);
+    color: var(--bs-form-select-color);
 }
