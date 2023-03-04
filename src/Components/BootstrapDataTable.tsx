@@ -107,6 +107,14 @@ export function RowRenderer<Row = any>({render}: RowRendererProps<Row>) {
     </tbody>;
 }
 
+export function CustomRenderer<Row = any>({render}: RowRendererProps<Row>) {
+    const rows = useContext(RowDatasContext);
+
+    return <>
+        { rows.map(render) }
+    </>;
+}
+
 export default function BootstrapTable({url, bordered, noStrip, defaultParams, add, children, innerRef, body}: BootstrapTableProps) {
     const state = useState({sort: 'id', ...defaultParams});
     const [params, setParams] = state;

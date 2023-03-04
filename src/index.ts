@@ -1,5 +1,5 @@
 
-import BootstrapTable, { RowRenderer, Actions, ActionsColumn, Column, default as BootstrapDataTable, IdColumn, useDataTableContext } from './Components/BootstrapDataTable';
+import BootstrapTable, { RowRenderer, CustomRenderer, Actions, ActionsColumn, Column, default as BootstrapDataTable, IdColumn, useDataTableContext } from './Components/BootstrapDataTable';
 import CRUD, { CRUDActions, ModalEntityEditor } from './Components/CRUD';
 import EntityEditor from "./Components/EntityEditor";
 import ExcelExportButton from './Components/ExcelExportButton';
@@ -47,7 +47,7 @@ export {
     Validator, ValueValidator, ValidationErrors,
     LoadingButton,
     BootstrapDataTable, IdColumn, Column, ActionsColumn, Actions, useDataTableContext,
-    RowRenderer,
+    RowRenderer, CustomRenderer,
     LanguageProvider, useLanguage, LanguageSwitcher,
     ErrorBoundary,
     CheckBox,
