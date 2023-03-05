@@ -6,7 +6,7 @@ import ExcelExportButton from './Components/ExcelExportButton';
 import ExternalLoginButton from './Components/ExternalLoginButton';
 import GoToTop from "./Components/GoToTop";
 import { ValidationErrors, Validator, ValueValidator } from "./Components/Validator";
-import ApiSelect from "./Components/ApiSelect";
+import ApiSelect, { CreateSelect } from "./Components/ApiSelect";
 import { Preview, Relative } from './Components/FilePickerCore';
 import ImagePicker from './Components/ImagePicker';
 import LoadingButton from './Components/LoadingButton';
@@ -54,5 +54,6 @@ export {
     DragAndDropArrow,
     useBootstrapOptions,
     BootstrapOptionsProvider,
-    BootstrapModal
+    BootstrapModal,
+    CreateSelect
 };

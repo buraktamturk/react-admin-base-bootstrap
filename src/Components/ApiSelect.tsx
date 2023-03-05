@@ -1,7 +1,7 @@
 /** @jsx jsx */
 import { jsx } from '@emotion/react';
-import React, { useCallback, useMemo, useState } from 'react';
-import { useFetch } from 'react-admin-base';
+import React, {Fragment, useCallback, useMemo, useState} from 'react';
+import {RefreshScope, useFetch, useRefresh} from 'react-admin-base';
 import { FormattedMessage, useIntl } from 'react-intl';
 import Select, { components } from "react-select";
 import CreatableSelect from 'react-select/creatable';
@@ -25,8 +25,7 @@ function SingleValue(props) {
 }
 
 function EditOrAddIndicator(props) {
-    const { className, cx, getStyles, innerProps } = props;
-
+    const { className, cx, getStyles, innerProps, isMulti } = props;
     return (
       <div
         {...innerProps}
@@ -44,7 +43,7 @@ function EditOrAddIndicator(props) {
             props.selectProps.onAddOrEdit();
         }}
       >
-       <i className={"fas " + (props.hasValue ? 'fa-pencil-alt' : 'fa-plus')} />
+          <i className={"fas " + (props.hasValue && !isMulti ? 'fa-pencil-alt' : 'fa-plus')} />
       </div>);
 }
 
@@ -58,7 +57,16 @@ function IndicatorsContainer(props) {
     </components.IndicatorsContainer>;
 }
 
-const Components = { Option, SingleValue, IndicatorsContainer };
+function MultiValueRemove(props) {
+    return <Fragment>
+        { props.selectProps.onAddOrEdit && <components.MultiValueRemove {...props} innerProps={{ ...props.innerProps, onClick: () => props.selectProps.onAddOrEdit(props.data) }}>
+            <i className="fas fa-pencil" style={{ fontSize: '.75em' }} />
+        </components.MultiValueRemove> }
+        <components.MultiValueRemove {...props} />
+    </Fragment>;
+}
+
+const Components = { Option, SingleValue, IndicatorsContainer, MultiValueRemove };
 
 export interface ApiSelectProps<Option = any> {
     url?: string;
@@ -75,6 +83,7 @@ export interface ApiSelectProps<Option = any> {
     disabled?: boolean;
     placeholder?: string;
     staticOptions?: any[];
+    onAddOrEdit?: (item: any) => void;
     getNewOptionData?: (name: string, elem: React.ReactNode) => any|null;
 }
 
@@ -85,7 +94,7 @@ export default function ApiSelect<Option = any>(props: ApiSelectProps<Option>) {
     const params = useMemo(() => ({ query: search }), [search]);
     const [ isMenuOpen, setIsMenuOpen ] = useState(false);
     const [ hasMenuOpen, setHasMenuOpen ] = useState(false);
-    const [ data, loading ] = useFetch((hasMenuOpen && url) || false, params);
+    const [ data, loading, error, update ] = useFetch((isMenuOpen && url) || false, params);
     const [ creating, setCreating ] = useState(false);
 
     let options = staticOptions || (data && data.data) || data;
@@ -121,24 +130,49 @@ export default function ApiSelect<Option = any>(props: ApiSelectProps<Option>) {
 
     const Component = onCreateOption ? CreatableSelect : Select;
 
-    return <Component
-        {...props}
-        className='react-select-container'
-        classNamePrefix="react-select"
-        onCreateOption={onCreateOption && handleCreateOption}
-        getNewOptionData={(onCreateOption && (getNewOptionData || ((inputValue) =>( { [nameKey || 'name']: inputValue, __isNew__: true })))) || undefined}
-        inputValue={search}
-        onInputChange={a => setSearch(a)}
-        components={Components}
-        isLoading={!!loading || creating}
-        getOptionLabel={getOptionLabel || ((row:any) => row[nameKey || 'name'])}
-        getOptionValue={getOptionValue || ((row:any) => row[idKey || 'id'])}
-        isDisabled={!!disabled || creating}
-        isClearable
-        isSearchable
-        placeholder={placeholder || intl.formatMessage({ id: 'SELECT' })}
-        options={!options ? [] : ((filter && options.filter(filter)) || options)}
-        onMenuOpen={onMenuOpen}
-        onMenuClose={onMenuClose}
-    />;
+    return <RefreshScope update={update}>
+        <Component
+            {...props}
+            className='react-select-container'
+            classNamePrefix="react-select"
+            onCreateOption={onCreateOption && handleCreateOption}
+            getNewOptionData={(onCreateOption && (getNewOptionData || ((inputValue) =>( { [nameKey || 'name']: inputValue, __isNew__: true })))) || undefined}
+            inputValue={search}
+            onInputChange={a => setSearch(a)}
+            components={Components}
+            isLoading={!!loading || creating}
+            getOptionLabel={getOptionLabel || ((row:any) => row[nameKey || 'name'])}
+            getOptionValue={getOptionValue || ((row:any) => row[idKey || 'id'])}
+            isDisabled={!!disabled || creating}
+            isClearable
+            isSearchable
+            placeholder={placeholder || intl.formatMessage({ id: 'SELECT' })}
+            options={!options ? [] : ((filter && options.filter(filter)) || options)}
+            onMenuOpen={onMenuOpen}
+            onMenuClose={onMenuClose}
+        />
+    </RefreshScope>;
+}
+
+export interface CreateSelectProps<Option = any> extends ApiSelectProps<Option> {
+    Component: any;
+}
+
+export function CreateSelect(props: CreateSelectProps) {
+    const { Component, onChange, value, isMulti, idKey } = props;
+
+    const update = useRefresh();
+    const [ isOpen, setIsOpen ] = useState<any>(false);
+    const isOpenId = isOpen && isOpen[idKey || "id"];
+
+    const onReload = useCallback(function(data) {
+        setIsOpen(false);
+        data && onChange(isMulti ? isOpenId ? value.map(b => b.id === isOpenId ? data : b) : (value || []).concat([data]) : data);
+        update && update();
+        }, [value, onChange, isMulti, isOpenId, isOpen, update, setIsOpen]);
+
+    return <Fragment>
+        { isOpen && <Component id={isOpenId || (!isMulti && value && value["idKey"])} onReload={onReload} /> }
+        <ApiSelect {...props} onAddOrEdit={item => setIsOpen(item || true)} />
+    </Fragment>;
 }
