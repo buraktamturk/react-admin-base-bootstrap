@@ -163,7 +163,7 @@ export function CreateSelect(props: CreateSelectProps) {
 
     const update = useRefresh();
     const [ isOpen, setIsOpen ] = useState<any>(false);
-    const isOpenId = isOpen && isOpen[idKey || "id"];
+    const isOpenId = isOpen === true ? null : isOpen && isOpen[idKey || "id"];
 
     const onReload = useCallback(function(data) {
         setIsOpen(false);
@@ -172,7 +172,7 @@ export function CreateSelect(props: CreateSelectProps) {
         }, [value, onChange, isMulti, isOpenId, isOpen, update, setIsOpen]);
 
     return <Fragment>
-        { isOpen && <Component id={isOpenId || (!isMulti && value && value["idKey"])} onReload={onReload} /> }
+        { isOpen && <Component id={isOpenId || (!isMulti && value && value[idKey || "id"])} onReload={onReload} /> }
         <ApiSelect {...props} onAddOrEdit={item => setIsOpen(item || true)} />
     </Fragment>;
 }
