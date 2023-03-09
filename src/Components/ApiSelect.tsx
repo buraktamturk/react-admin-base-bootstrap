@@ -24,6 +24,12 @@ function SingleValue(props) {
     </components.SingleValue>
 }
 
+function MultiValue(props) {
+    return <components.MultiValue {...props}>
+        { (props.selectProps.children && props.selectProps.children(props.data)) || props.children }
+    </components.MultiValue>
+}
+
 function EditOrAddIndicator(props) {
     const { className, cx, getStyles, innerProps, isMulti } = props;
     return (
@@ -66,7 +72,7 @@ function MultiValueRemove(props) {
     </Fragment>;
 }
 
-const Components = { Option, SingleValue, IndicatorsContainer, MultiValueRemove };
+const Components = { Option, SingleValue, MultiValue, IndicatorsContainer, MultiValueRemove };
 
 export interface ApiSelectProps<Option = any> {
     url?: string;
