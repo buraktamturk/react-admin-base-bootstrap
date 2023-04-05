@@ -1,5 +1,5 @@
 
-import BootstrapTable, { RowRenderer, CustomRenderer, Actions, ActionsColumn, Column, default as BootstrapDataTable, IdColumn, useDataTableContext } from './Components/BootstrapDataTable';
+import BootstrapTable, { useRows, useRow, RowRenderer, CustomRenderer, Actions, ActionsColumn, Column, default as BootstrapDataTable, IdColumn, useDataTableContext } from './Components/BootstrapDataTable';
 import CRUD, { CRUDActions, ModalEntityEditor } from './Components/CRUD';
 import EntityEditor from "./Components/EntityEditor";
 import ExcelExportButton from './Components/ExcelExportButton';
@@ -55,5 +55,6 @@ export {
     useBootstrapOptions,
     BootstrapOptionsProvider,
     BootstrapModal,
-    CreateSelect
+    CreateSelect,
+    useRow, useRows
 };

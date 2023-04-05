@@ -14,6 +14,14 @@ export function useDataTableContext() {
     return useContext(DataTableContext);
 }
 
+export function useRows() {
+    return useContext(RowDatasContext);
+}
+
+export function useRow() {
+    return useContext(RowDataContext);
+}
+
 type ActionsProp = {
     edit?: string;
     del?: string;
