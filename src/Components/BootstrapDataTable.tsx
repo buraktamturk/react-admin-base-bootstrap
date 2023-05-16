@@ -186,6 +186,7 @@ export default function BootstrapTable({url, bordered, noStrip, defaultParams, a
                                     />
                                 </Col>
                             </Row>
+                            {children[3]}
                         </CardHeader>
                             {data === null ? <Alert className="text-center mb-0 mx-3 " color="warning"><i className="fas fa-spinner fa-spin"></i></Alert> : !data.length ? <Alert className="text-center mx-3" color="danger">
                                 <i className="far fa-times-circle"></i> <FormattedMessage id="NO_DATA_IS_AVAILABLE"/>
