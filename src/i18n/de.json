@@ -37,5 +37,6 @@
   "ACTIONS.DELETE.TEXT": "Diese Aktion ist nicht umkehrbar!",
   "ACTIONS.DELETE.CONFIRM": "Ja, löschen!",
   "PLEASE_WAIT": "Warten Sie mal.",
-  "AUTHORIZATION_CODE": "Zugangscode"
+  "AUTHORIZATION_CODE": "Zugangscode",
+  "RECORDS": "{count, plural, =0 {kein eintrag} one {# datensatz} other {# datensätze}}"
 }

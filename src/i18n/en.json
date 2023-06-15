@@ -39,5 +39,6 @@
   "ACTIONS.DELETE.TEXT": "You won't be able to revert this!",
   "ACTIONS.DELETE.CONFIRM": "Yes, delete it!",
   "PLEASE_WAIT": "Please wait.",
-  "AUTHORIZATION_CODE": "Authorization Code"
+  "AUTHORIZATION_CODE": "Authorization Code",
+  "RECORDS": "{count, plural, =0 {no records} one {# record} other {# records}}"
 }

@@ -38,5 +38,6 @@
   "ACTIONS.DELETE.TEXT": "Bu işlem geri alınamaz!",
   "ACTIONS.DELETE.CONFIRM": "Evet, sil!",
   "PLEASE_WAIT": "Lütfen bekleyiniz.",
-  "AUTHORIZATION_CODE": "Yetki Kodu"
+  "AUTHORIZATION_CODE": "Yetki Kodu",
+  "RECORDS": "{count, plural, =0 {Kayıt yok} one {# kayıt} other {# kayıt}}"
 }

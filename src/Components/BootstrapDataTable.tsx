@@ -126,7 +126,7 @@ export function CustomRenderer<Row = any>({render}: RowRendererProps<Row>) {
 export default function BootstrapTable({url, bordered, noStrip, defaultParams, add, children, innerRef, body}: BootstrapTableProps) {
     const state = useState({sort: 'id', ...defaultParams});
     const [params, setParams] = state;
-    const [page, lastPage, setPage, data, itemPerPage, setItemPerPage, update] = useDataTable(url, params, body);
+    const [page, lastPage, setPage, data, itemPerPage, setItemPerPage, update, count] = useDataTable(url, params, body);
     const intl = useIntl();
     const [ api ] = useAuth();
 
@@ -196,14 +196,24 @@ export default function BootstrapTable({url, bordered, noStrip, defaultParams, a
                                     {data && data.map(children[1].props.children)}
                                 </tbody> : children[1]}
                             </Table>}
-                        { lastPage > 1 && <CardFooter>
-                            <nav>
-                                <BootstrapPagination
-                                    currentPage={page}
-                                    pageCount={lastPage}
-                                    onPageChange={index => setPage(index)}
-                                />
-                            </nav>
+                        { (lastPage > 1 || count > 0) && <CardFooter>
+                            <Row className="justify-content-between">
+                                <Col>
+                                    { lastPage > 1 && <nav>
+                                        <BootstrapPagination
+                                            currentPage={page}
+                                            pageCount={lastPage}
+                                            onPageChange={index => setPage(index)}
+                                        />
+                                    </nav> }
+                                </Col>
+                                { count > 0 && <Col className="col-auto align-self-center">
+                                    <FormattedMessage
+                                        id="RECORDS"
+                                        values={{ count }}
+                                    />
+                                </Col> }
+                            </Row>
                         </CardFooter> }
                     </RowDatasContext.Provider>
                 </RefreshScope>
