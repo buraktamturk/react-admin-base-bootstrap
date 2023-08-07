@@ -19,7 +19,8 @@ type ModalEntityEditorParams = {
 }
 
 export function ModalEntityEditor({ entity, title, size, url, onReload, disabled, children } : ModalEntityEditorParams) {
-    const [ , , save, loading ] = entity;
+    const [ , , save, loading, dirty ] = entity;
+    const bsOptions = useBootstrapOptions();
 
     const [ open, setOpen ] = useState(true);
     const [ saved, setSaved ] = useState(false);
@@ -58,10 +59,10 @@ export function ModalEntityEditor({ entity, title, size, url, onReload, disabled
     }, [save, saved, error, onReload, url]);
 
     return <>
-        { (saved || !open) && url && <Navigate to={url} replace />}
+        { ((!bsOptions.noCloseOnSave && saved) || !open) && url && <Navigate to={url} replace />}
         <BootstrapModal isOpen size={size} toggle={() => url ? setOpen(false) : onReload(null)} fade={false}>
             { title && <ModalHeader toggle={() => url ? setOpen(false) : onReload(null)}>
-                <b>{ title }</b>
+                    <b>{ title }</b>
             </ModalHeader> }
             <ValidatorProvider>
                 <Form onSubmit={onSubmit} disabled={!!loading || disabled}>
@@ -69,12 +70,13 @@ export function ModalEntityEditor({ entity, title, size, url, onReload, disabled
                         { children }
                     </fieldset>
                     <ModalFooter>
-                      { error && <Alert color="danger" toggle={() => setError(null)} style={{ display: 'block', width: '100%' }}>{ error }</Alert>}
+                        { error && <Alert color="danger" toggle={() => setError(null)} style={{ display: 'block', width: '100%' }}>{ error }</Alert>}
+                        { bsOptions.noCloseOnSave && !dirty && saved && <Alert color="success" style={{ display: 'block', width: '100%' }}><i className="fas fa-check-circle" /> <FormattedMessage id="ENTITY.SAVED" /></Alert>}
                       <Row className="w-100">
                         <Col>
-                          <LoadingButton block loading={loading} type="submit" color="primary">
-                              <i className="fas fa-save" />{' '}<FormattedMessage id="ENTITY.SAVE" />
-                          </LoadingButton>
+                            <LoadingButton block loading={loading} disabled={bsOptions.onlySaveOnDirty && !dirty} type="submit" color="primary">
+                                <i className="fas fa-save" />{' '}<FormattedMessage id="ENTITY.SAVE" />
+                            </LoadingButton>
                         </Col>
                         <Col>
                           <Button block outline color="danger" onClick={(e) => { e.preventDefault(); (url ? setOpen(false) : onReload(null)); }}>

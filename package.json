@@ -38,7 +38,7 @@
     "modal-cropper": "^1.2.3",
     "nprogress": "^0.2.0",
     "prettysize": "^2.0.0",
-    "react-admin-base": "^0.8.8",
+    "react-admin-base": "^0.8.10",
     "react-dnd": "^16.0.1",
     "react-dnd-html5-backend": "^16.0.1",
     "react-password-strength-bar": "^0.4.1",
