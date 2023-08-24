@@ -101,6 +101,7 @@ export interface BootstrapTableProps {
     add?: string;
     children: any;
     innerRef?: any;
+    noSearch?: boolean;
 }
 
 interface RowRendererProps<Row = any> {
@@ -123,7 +124,7 @@ export function CustomRenderer<Row = any>({render}: RowRendererProps<Row>) {
     </>;
 }
 
-export default function BootstrapTable({url, bordered, noStrip, defaultParams, add, children, innerRef, body}: BootstrapTableProps) {
+export default function BootstrapTable({url, bordered, noStrip, defaultParams, add, noSearch = false, children, innerRef, body}: BootstrapTableProps) {
     const state = useState({sort: 'id', ...defaultParams});
     const [params, setParams] = state;
     const [page, lastPage, setPage, data, itemPerPage, setItemPerPage, update, count] = useDataTable(url, params, body);
@@ -178,13 +179,13 @@ export default function BootstrapTable({url, bordered, noStrip, defaultParams, a
                                     </Input>
                                 </Col>
                                 {children[2]}
-                                <Col md="3" className="ms-auto">
+                                {!noSearch && <Col md="3" className="ms-auto">
                                     <Input
                                         placeholder={intl.formatMessage({id: "SEARCH"})} type="text"
                                         value={params.query || ''}
                                         onChange={e => setParams({...params, query: e.currentTarget.value})}
                                     />
-                                </Col>
+                                </Col>}
                             </Row>
                             {children[3]}
                         </CardHeader>
