@@ -1,4 +1,3 @@
-/** @jsx jsx */
 import { jsx } from '@emotion/react';
 import React, {Fragment, useCallback, useMemo, useState} from 'react';
 import {RefreshScope, useFetch, useRefresh} from 'react-admin-base';

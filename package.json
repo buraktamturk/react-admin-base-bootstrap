@@ -1,6 +1,6 @@
 {
   "name": "react-admin-base-bootstrap",
-  "version": "0.8.17",
+  "version": "0.8.19",
   "description": "",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -28,7 +28,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-intl": "^6.2.10",
-    "react-router-dom": "^6.13.0"
+    "react-router-dom": "^6.18.0"
   },
   "dependencies": {
     "@emotion/react": "^11.11.1",
