@@ -19,7 +19,7 @@ type ModalEntityEditorParams = {
 }
 
 export function ModalEntityEditor({ entity, title, size, url, onReload, disabled, children } : ModalEntityEditorParams) {
-    const [ , , save, loading, dirty ] = entity;
+    const [ data, , save, loading, dirty ] = entity;
     const bsOptions = useBootstrapOptions();
 
     const [ open, setOpen ] = useState(true);
@@ -60,9 +60,10 @@ export function ModalEntityEditor({ entity, title, size, url, onReload, disabled
 
     return <>
         { ((!bsOptions.noCloseOnSave && saved) || !open) && url && <Navigate to={url} replace />}
+        { bsOptions.noCloseOnSave && saved && open && url && <Navigate to={url + "/" + data.id + "/edit"} replace />}
         <BootstrapModal isOpen size={size} toggle={() => url ? setOpen(false) : onReload(null)} fade={false}>
             { title && <ModalHeader toggle={() => url ? setOpen(false) : onReload(null)}>
-                    <b>{ title }</b>
+                <b>{ title }</b>
             </ModalHeader> }
             <ValidatorProvider>
                 <Form onSubmit={onSubmit} disabled={!!loading || disabled}>
