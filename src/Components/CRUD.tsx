@@ -1,6 +1,6 @@
 import React, { useCallback, useContext, useRef, useState } from 'react';
 import { ValidatorProvider } from "react-admin-base";
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { Navigate, Routes, useParams, Route } from 'react-router-dom';
 import { Alert, Button, Col, Form, Modal, ModalFooter, ModalHeader, Row } from "reactstrap";
 import LoadingButton from '../Components/LoadingButton';
@@ -58,11 +58,28 @@ export function ModalEntityEditor({ entity, title, size, url, onReload, disabled
         }
     }, [save, saved, error, onReload, url]);
 
+    const check = bsOptions.noCloseOnSave && dirty;
+    const intl = useIntl();
+    const checkConfirmText = intl.formatMessage({ id: 'CANCEL_ENTITY_SAVE' });
+    const onClose = useCallback(function() {
+        if (check) {
+            const ok = confirm(checkConfirmText);
+            if (!ok)
+                return ;
+        }
+
+        if (url) {
+            setOpen(false);
+        } else {
+            onReload(null);
+        }
+    }, [ setOpen, onReload, url, check, checkConfirmText ]);
+
     return <>
         { ((!bsOptions.noCloseOnSave && saved) || !open) && url && <Navigate to={url} replace />}
         { bsOptions.noCloseOnSave && saved && open && url && <Navigate to={url + "/" + data.id + "/edit"} replace />}
-        <BootstrapModal isOpen size={size} toggle={() => url ? setOpen(false) : onReload(null)} fade={false}>
-            { title && <ModalHeader toggle={() => url ? setOpen(false) : onReload(null)}>
+        <BootstrapModal isOpen size={size} toggle={onClose} fade={false}>
+            { title && <ModalHeader toggle={onClose}>
                 <b>{ title }</b>
             </ModalHeader> }
             <ValidatorProvider>
