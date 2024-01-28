@@ -17,7 +17,7 @@ import CheckBox from './Components/CheckBox';
 import ErrorBoundary from './Components/ErrorBoundary';
 import { useMenuState, useIsMobile } from './Components/MenuState';
 import TopProgressBar from './Components/TopProgressBar';
-import ThemeProvider, { useTheme, useAllThemes } from './Components/ThemeProvider';
+import ThemeProvider, { useTheme, useAllThemes, rawCssLoader, urlCssLoader } from './Components/ThemeProvider';
 import StepList, { StepItem } from './Components/StepList';
 import PasswordInput from './Components/PasswordInput';
 import DefaultValidatorOptions from './Components/DefaultValidatorOptions';
@@ -26,7 +26,7 @@ import BootstrapOptionsProvider, { useBootstrapOptions } from './Components/Boot
 import BootstrapModal from './Components/BootstrapModal';
 
 export {
-    ThemeProvider, useTheme, useAllThemes,
+    ThemeProvider, useTheme, useAllThemes, rawCssLoader, urlCssLoader,
     useIsMobile, useMenuState,
     DefaultValidatorOptions,
     PasswordInput,
