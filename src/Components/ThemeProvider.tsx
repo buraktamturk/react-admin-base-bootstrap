@@ -19,7 +19,7 @@ export default function ThemeProvider({ themes, defaultTheme, children }) {
 	const rTheme = theme || defaultTheme || 'light';
 	
 	useEffect(function() {
-		const promise = (themes[rTheme] || themes[defaultTheme]).css()
+		const promise = Promise.resolve((themes[rTheme] || themes[defaultTheme]).css())
 			.then(css => {
 				css.default.use();
 				return css;
@@ -39,35 +39,37 @@ export default function ThemeProvider({ themes, defaultTheme, children }) {
 	</AllThemesContext.Provider>;
 }
 
-export async function rawCssLoader(cb) {
+export function rawCssLoader(cb) {
 	const styleTag = document.createElement('style');
 
 	let loaded = false;
 
-	return {
+	return () => ({
 		default: {
 			use: async function() {
 				document.head.appendChild(styleTag);
 
 				if (!loaded) {
 					loaded = true;
-					styleTag.innerHTML = await cb();
+
+					const res = await cb();
+					styleTag.innerHTML = res?.default || res;
 				}
 			},
 			unuse: function() {
 				document.head.removeChild(styleTag);
 			}
 		}
-	};
+	});
 }
 
-export async function urlCssLoader(link) {
+export function urlCssLoader(link) {
 	const linkTag = document.createElement('link');
 	linkTag.rel = 'stylesheet';
 	linkTag.type = 'text/css';
 	linkTag.href = link;
 
-	return {
+	return () => ({
 		default: {
 			use: function() {
 				document.head.appendChild(linkTag);
@@ -76,5 +78,5 @@ export async function urlCssLoader(link) {
 				document.head.removeChild(linkTag);
 			}
 		}
-	};
+	});
 }
