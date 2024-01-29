@@ -97,7 +97,7 @@ export function ModalEntityEditor({ entity, title, size, url, onReload, disabled
                             </LoadingButton>
                         </Col>
                         <Col>
-                          <Button block outline color="danger" onClick={(e) => { e.preventDefault(); (url ? setOpen(false) : onReload(null)); }}>
+                          <Button type="button" block outline color="danger" onClick={onClose}>
                               <i className="fas fa-times-circle" />{' '}<FormattedMessage id="ENTITY.CANCEL" />
                           </Button>
                         </Col>

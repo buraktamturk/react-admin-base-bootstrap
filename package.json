@@ -1,6 +1,6 @@
 {
   "name": "react-admin-base-bootstrap",
-  "version": "0.9.3",
+  "version": "0.9.4",
   "description": "",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -38,7 +38,7 @@
     "modal-cropper": "^1.2.3",
     "nprogress": "^0.2.0",
     "prettysize": "^2.0.0",
-    "react-admin-base": "^0.9.0",
+    "react-admin-base": "^0.9.1",
     "react-dnd": "^16.0.1",
     "react-dnd-html5-backend": "^16.0.1",
     "react-password-strength-bar": "^0.4.1",
