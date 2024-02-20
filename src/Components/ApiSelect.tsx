@@ -1,9 +1,20 @@
+/** @jsx jsx */
 import { jsx } from '@emotion/react';
 import React, {Fragment, useCallback, useMemo, useState} from 'react';
 import {RefreshScope, useFetch, useRefresh} from 'react-admin-base';
 import { FormattedMessage, useIntl } from 'react-intl';
 import Select, { components } from "react-select";
 import CreatableSelect from 'react-select/creatable';
+
+import { closestCenter, DndContext, DragEndEvent } from '@dnd-kit/core';
+import { restrictToParentElement } from '@dnd-kit/modifiers';
+import {
+  arrayMove,
+  horizontalListSortingStrategy,
+  SortableContext,
+  useSortable,
+} from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 
 function Option(props) {
     return <components.Option {...props}>
@@ -42,7 +53,7 @@ function EditOrAddIndicator(props) {
           className
         )}
         css={getStyles('clearIndicator', props)}
-        onMouseDown={e => { 
+        onMouseDown={e => {
             e.stopPropagation();
             e.preventDefault();
             props.selectProps.onAddOrEdit();
@@ -73,6 +84,42 @@ function MultiValueRemove(props) {
 
 const Components = { Option, SingleValue, MultiValue, IndicatorsContainer, MultiValueRemove };
 
+const SortableMultiValue = (props) => {
+  const onMouseDown = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+  };
+  const innerProps = { ...props.innerProps, onMouseDown };
+  const { attributes, listeners, setNodeRef, transform, transition } =
+    useSortable({
+      id: props.selectProps.getOptionValue(props.data),
+    });
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+  };
+
+  return (
+    <div style={style} ref={setNodeRef} {...attributes} {...listeners}>
+      <MultiValue {...props} innerProps={innerProps} />
+    </div>
+  );
+};
+
+const SortableMultiValueRemove = (props) => {
+  return (
+    <MultiValueRemove
+      {...props}
+      innerProps={{
+        onPointerDown: (e) => e.stopPropagation(),
+        ...props.innerProps,
+      }}
+    />
+  );
+};
+
+const SortableComponents = { Option, SingleValue, MultiValue: SortableMultiValue, IndicatorsContainer, MultiValueRemove: SortableMultiValueRemove };
+
 export interface ApiSelectProps<Option = any> {
     url?: string;
     value: Option|Option[];
@@ -88,12 +135,14 @@ export interface ApiSelectProps<Option = any> {
     disabled?: boolean;
     placeholder?: string;
     staticOptions?: any[];
+    sortable?: boolean;
     onAddOrEdit?: (item: any) => void;
     getNewOptionData?: (name: string, elem: React.ReactNode) => any|null;
 }
 
+
 export default function ApiSelect<Option = any>(props: ApiSelectProps<Option>) {
-    const { disabled, url, getOptionLabel, getOptionValue, idKey, nameKey, filter, group, onCreateOption, getNewOptionData, isMulti, onChange, value, placeholder, staticOptions } = props;
+    const { disabled, url, getOptionLabel, sortable, getOptionValue, idKey, nameKey, filter, group, onCreateOption, getNewOptionData, isMulti, onChange, value, placeholder, staticOptions } = props;
     const intl = useIntl();
     const [ search, setSearch ] = useState('');
     const params = useMemo(() => ({ query: search }), [search]);
@@ -133,29 +182,50 @@ export default function ApiSelect<Option = any>(props: ApiSelectProps<Option>) {
         setIsMenuOpen(false);
     }, [ setIsMenuOpen ]);
 
-    const Component = onCreateOption ? CreatableSelect : Select;
+    const _getOptionValue = getOptionValue || ((row:any) => row[idKey || 'id']);
+
+    const onDragEnd = useCallback(({ active, over }) => {
+      if (!active || !over) return;
+
+      const oldIndex = (value as any).findIndex((item) => _getOptionValue(item) === active.id);
+      const newIndex = (value as any).findIndex((item) => _getOptionValue(item) === over.id);
+      const newValue = arrayMove(value as any, oldIndex, newIndex);
+      onChange(newValue as any);
+    }, [ _getOptionValue, value, onChange ]);
+
+    const Component = (onCreateOption ? CreatableSelect : Select);
+
+    const useSort = isMulti && sortable;
+    const elem = <Component
+        {...props}
+        className='react-select-container'
+        classNamePrefix="react-select"
+        onCreateOption={(onCreateOption && handleCreateOption) as any}
+        getNewOptionData={(onCreateOption && (getNewOptionData || ((inputValue) =>( { [nameKey || 'name']: inputValue, __isNew__: true })))) || undefined}
+        inputValue={search}
+        onInputChange={a => setSearch(a)}
+        components={(useSort ? SortableComponents : Components) as any}
+        isLoading={!!loading || creating}
+        getOptionLabel={getOptionLabel || ((row:any) => row[nameKey || 'name'])}
+        getOptionValue={_getOptionValue}
+        isDisabled={!!disabled || creating}
+        isClearable
+        isSearchable
+        placeholder={placeholder || intl.formatMessage({ id: 'SELECT' })}
+        options={!options ? [] : ((filter && options.filter(filter)) || options)}
+        onMenuOpen={onMenuOpen}
+        onMenuClose={onMenuClose}
+    />;
 
     return <RefreshScope update={update}>
-        <Component
-            {...props}
-            className='react-select-container'
-            classNamePrefix="react-select"
-            onCreateOption={onCreateOption && handleCreateOption}
-            getNewOptionData={(onCreateOption && (getNewOptionData || ((inputValue) =>( { [nameKey || 'name']: inputValue, __isNew__: true })))) || undefined}
-            inputValue={search}
-            onInputChange={a => setSearch(a)}
-            components={Components}
-            isLoading={!!loading || creating}
-            getOptionLabel={getOptionLabel || ((row:any) => row[nameKey || 'name'])}
-            getOptionValue={getOptionValue || ((row:any) => row[idKey || 'id'])}
-            isDisabled={!!disabled || creating}
-            isClearable
-            isSearchable
-            placeholder={placeholder || intl.formatMessage({ id: 'SELECT' })}
-            options={!options ? [] : ((filter && options.filter(filter)) || options)}
-            onMenuOpen={onMenuOpen}
-            onMenuClose={onMenuClose}
-        />
+        { useSort ? <DndContext modifiers={[restrictToParentElement]} onDragEnd={onDragEnd} collisionDetection={closestCenter}>
+              <SortableContext
+                items={((value || []) as any).map(_getOptionValue)}
+                strategy={horizontalListSortingStrategy}
+              >
+              {elem}
+             </SortableContext>
+          </DndContext> : elem }
     </RefreshScope>;
 }
 

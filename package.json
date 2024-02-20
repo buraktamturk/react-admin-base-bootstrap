@@ -1,6 +1,6 @@
 {
   "name": "react-admin-base-bootstrap",
-  "version": "0.9.4",
+  "version": "0.9.10",
   "description": "",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -45,7 +45,11 @@
     "react-responsive": "^9.0.2",
     "react-select": "^5.8.0",
     "reactstrap": "^9.2.2",
-    "sweetalert2": "^11.10.4"
+    "sweetalert2": "^11.10.5",
+    "@dnd-kit/core": "^6.1.0",
+    "@dnd-kit/modifiers": "^7.0.0",
+    "@dnd-kit/sortable": "^8.0.0",
+    "@dnd-kit/utilities": "^3.2.2"
   },
   "devDependencies": {
     "nodemon": "^3.0.3",
