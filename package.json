@@ -1,6 +1,6 @@
 {
   "name": "react-admin-base-bootstrap",
-  "version": "0.9.10",
+  "version": "0.9.12",
   "description": "",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

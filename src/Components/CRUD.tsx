@@ -15,10 +15,11 @@ type ModalEntityEditorParams = {
     url?: string;
     onReload?: any;
     disabled?: Boolean;
+    beforeSave?: () => Promise<Boolean> | Boolean;
     children: React.ReactNode;
 }
 
-export function ModalEntityEditor({ entity, title, size, url, onReload, disabled, children } : ModalEntityEditorParams) {
+export function ModalEntityEditor({ entity, title, size, url, onReload, disabled, beforeSave, children } : ModalEntityEditorParams) {
     const [ data, , save, loading, dirty ] = entity;
     const bsOptions = useBootstrapOptions();
 
@@ -30,7 +31,6 @@ export function ModalEntityEditor({ entity, title, size, url, onReload, disabled
         e.stopPropagation();
         e.preventDefault();
 
-
         if (saved) {
             setSaved(false);
         }
@@ -40,6 +40,7 @@ export function ModalEntityEditor({ entity, title, size, url, onReload, disabled
         }
 
         try {
+          if (!beforeSave || await beforeSave()) {
             let data = await save();
             if (onReload) {
                 await onReload(data);
@@ -48,6 +49,7 @@ export function ModalEntityEditor({ entity, title, size, url, onReload, disabled
             if (url) {
                 setSaved(true);
             }
+          }
         } catch(e) {
             console.error(e);
             setError((e.response && e.response.data && e.response.data.message) || (error.data && error.data.message) || e.data || e.message || e);
@@ -56,7 +58,7 @@ export function ModalEntityEditor({ entity, title, size, url, onReload, disabled
         {
 
         }
-    }, [save, saved, error, onReload, url]);
+    }, [save, saved, error, onReload, url, beforeSave]);
 
     const check = bsOptions.noCloseOnSave && dirty;
     const intl = useIntl();
