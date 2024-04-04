@@ -45,9 +45,10 @@ export function Actions({edit, del, rowSpan, children}: ActionsProp) {
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
-            confirmButtonText: intl.formatMessage({ id: 'ACTIONS.DELETE.CONFIRM' })
+            confirmButtonText: intl.formatMessage({ id: 'ACTIONS.DELETE.CONFIRM' }),
+            cancelButtonText: intl.formatMessage({ id: 'ENTITY.CANCEL' }),
         });
-        
+
         if (val.value) {
             setLoading(true);
             try {
@@ -148,7 +149,7 @@ export default function BootstrapTable({url, bordered, noStrip, defaultParams, a
             };
         }
     }, [setParams, innerRef]);
-    
+
     const fetchData = useCallback(async function(extraParams) {
         if (body) {
             const data = await api.tokenized.post(url, body, { params: { ...params,  ...(extraParams || {}) } });
