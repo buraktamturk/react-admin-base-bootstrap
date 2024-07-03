@@ -50,7 +50,7 @@ export function Preview({ value }) {
             </Relative>
         </div>;
     }
-    
+
     return null;
 }
 
@@ -83,7 +83,8 @@ export default function FilePickerCore({ disabled, index, move, className, accep
         return <DragAndDropItem item={index}>
             <div className={className}>
                 <DragAndDropArrow className="me-1" />
-                { !disabled && <Button color="danger" outline size="sm" onClick={cancel}><i className="fa fa-trash" /></Button> }
+                { !disabled && <Button type="button" color="danger" outline size="sm" className="me-1" onClick={cancel}><i className="fa fa-trash" /></Button > }
+                { !disabled && <Button type="button" color="danger" outline size="sm" onClick={chooseFile}><i className="fa fa-rotate" /></Button> }
                 &nbsp;<Relative><a href={uc.$src} target="_blank" className="btn btn-sm btn-outline-primary"><i className="fa fa-download" /> { uc.name }</a></Relative>
                 <span>&nbsp;({ prettysize(uc.$size) })</span>
                 { <CustomPreview value={uc} /> }
