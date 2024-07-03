@@ -11,9 +11,10 @@ export interface SingleFilePickerProps {
     onChange: (value: any) => void;
     children?: (value: any) => React.ReactNode;
     transform?: any;
+    isReplace?: boolean;
 }
 
-export default function SingleFilePicker({ disabled, className, accepts, value, onChange, transform, children }: SingleFilePickerProps) {
+export default function SingleFilePicker({ disabled, className, accepts, value, onChange, transform, isReplace = false, children }: SingleFilePickerProps) {
     const uploadController = useUploadController();
     const controller = useMemo(() => uploadController(value), [uploadController, value]);
 
@@ -28,7 +29,7 @@ export default function SingleFilePicker({ disabled, className, accepts, value, 
             }
         }
     }, [ value, controller, onChange ]);
- 
+
     return <FilePickerCore
         disabled={!!disabled}
         className={className}
@@ -36,5 +37,6 @@ export default function SingleFilePicker({ disabled, className, accepts, value, 
         value={controller}
         onNotify={_onChange}
         transform={transform}
+        isReplace={isReplace}
     >{children}</FilePickerCore>;
 }

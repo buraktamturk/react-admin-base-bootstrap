@@ -54,7 +54,7 @@ export function Preview({ value }) {
     return null;
 }
 
-export default function FilePickerCore({ disabled, index, move, className, accepts, value, onNotify, children, transform } : { disabled?: any, index?: number, move?: any, className?: any, accepts?: any, value?:any, onNotify?:any, children?:any, transform?:any }) {
+export default function FilePickerCore({ disabled, index, move, className, accepts, value, onNotify, isReplace = false, children, transform } : { disabled?: any, index?: number, move?: any, className?: any, accepts?: any, value?:any, onNotify?:any, isReplace?: boolean, children?:any, transform?:any }) {
     const [ uc, cancel, pick ] = useFilePicker(value, onNotify);
     const CustomPreview = usePreviewComponent() || Preview;
 
@@ -83,7 +83,7 @@ export default function FilePickerCore({ disabled, index, move, className, accep
         return <DragAndDropItem item={index}>
             <div className={className}>
                 <DragAndDropArrow className="me-1" />
-                { !disabled && <Button type="button" color="danger" outline size="sm" className="me-1" onClick={cancel}><i className="fa fa-trash" /></Button > }
+                {!disabled && <Button type="button" color="danger" outline size="sm" className="me-1" onClick={cancel}><i className={isReplace ? "fa fa-rotate" : "fa fa-trash" } /></Button > }
                 &nbsp;<Relative><a href={uc.$src} target="_blank" className="btn btn-sm btn-outline-primary"><i className="fa fa-download" /> { uc.name }</a></Relative>
                 <span>&nbsp;({ prettysize(uc.$size) })</span>
                 { <CustomPreview value={uc} /> }
