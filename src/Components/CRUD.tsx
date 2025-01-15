@@ -145,7 +145,7 @@ export default function CRUD(props: CRUDProps) {
 
     const reload = useCallback(async function() {
         if (ref.current) {
-            ref.current({});
+            ref.current(params => ({ ...params }));
         }
     }, [ref]);
 
