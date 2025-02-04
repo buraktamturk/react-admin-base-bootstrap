@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react"
-import React, {Fragment, useCallback, useMemo, useState} from 'react';
+import React, {Fragment, useCallback, useMemo, useRef, useState} from 'react';
 import {RefreshScope, useFetch, useRefresh} from 'react-admin-base';
 import { FormattedMessage, useIntl } from 'react-intl';
 import Select, { components } from "react-select";
@@ -42,6 +42,7 @@ function MultiValue(props) {
 
 function EditOrAddIndicator(props) {
     const { className, cx, getStyles, innerProps, isMulti } = props;
+
     return (
       <div
         {...innerProps}
@@ -57,6 +58,9 @@ function EditOrAddIndicator(props) {
             e.stopPropagation();
             e.preventDefault();
             props.selectProps.onAddOrEdit();
+        }}
+        onTouchEnd={e => {
+          props.selectProps.onAddOrEdit();
         }}
       >
           <i className={"fas " + (props.hasValue && !isMulti ? 'fa-pencil-alt' : 'fa-plus')} />
