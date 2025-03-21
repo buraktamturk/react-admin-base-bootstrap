@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react"
 import React, {Fragment, useCallback, useMemo, useRef, useState} from 'react';
-import {RefreshScope, useFetch, useRefresh} from 'react-admin-base';
+import {RefreshScope, useFetch, useFreeFetch, useRefresh} from 'react-admin-base';
 import { FormattedMessage, useIntl } from 'react-intl';
 import Select, { components } from "react-select";
 import CreatableSelect from 'react-select/creatable';
@@ -141,18 +141,19 @@ export interface ApiSelectProps<Option = any> {
     staticOptions?: any[];
     sortable?: boolean;
     onAddOrEdit?: (item: any) => void;
+    free?: boolean;
     getNewOptionData?: (name: string, elem: React.ReactNode) => any|null;
 }
 
 
 export default function ApiSelect<Option = any>(props: ApiSelectProps<Option>) {
-    const { disabled, url, getOptionLabel, sortable, getOptionValue, idKey, nameKey, filter, group, onCreateOption, getNewOptionData, isMulti, onChange, value, placeholder, staticOptions } = props;
+    const { disabled, url, getOptionLabel, sortable, free, getOptionValue, idKey, nameKey, filter, group, onCreateOption, getNewOptionData, isMulti, onChange, value, placeholder, staticOptions } = props;
     const intl = useIntl();
     const [ search, setSearch ] = useState('');
     const params = useMemo(() => ({ query: search }), [search]);
     const [ isMenuOpen, setIsMenuOpen ] = useState(false);
     const [ hasMenuOpen, setHasMenuOpen ] = useState(false);
-    const [ data, loading, error, update ] = useFetch((isMenuOpen && url) || false, params);
+    const [ data, loading, error, update ] = (free ? useFreeFetch : useFetch)((isMenuOpen && url) || false, params);
     const [ creating, setCreating ] = useState(false);
 
     let options = staticOptions || (data && data.data) || data;
