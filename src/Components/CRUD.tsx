@@ -1,7 +1,7 @@
 import React, { useCallback, useContext, useRef, useState } from 'react';
 import { ValidatorProvider } from "react-admin-base";
 import { FormattedMessage, useIntl } from 'react-intl';
-import { Navigate, Routes, useParams, Route } from 'react-router-dom';
+import { Navigate, Routes, useParams, Route } from 'react-router';
 import { Alert, Button, Col, Form, Modal, ModalFooter, ModalHeader, Row } from "reactstrap";
 import LoadingButton from '../Components/LoadingButton';
 import BootstrapDataTable, { Actions, BootstrapTableProps } from './BootstrapDataTable';

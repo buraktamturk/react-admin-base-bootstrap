@@ -6,21 +6,15 @@ import { Alert, FormFeedback } from "reactstrap";
 
 function ValidatorCore(name: string, value: any, type: any, children: any) {
     const error = useValidate(name || '', value, type);
-    
+
     return <>
-        {(error 
+        {(error
             && React.cloneElement(children, { invalid: !!error, className: (children.props.className || '') + (!!error ? ' is-invalid' : '') })) || children}
         {error && <FormFeedback className="d-block">{error}</FormFeedback>}
     </>;
 }
 
-type ValidatorProps = {
-  name: string;
-  type: any;
-  children: JSX.Element;
-};
-
-export function Validator({ name, type, children }: ValidatorProps) {
+export function Validator({ name, type, children }) {
     return ValidatorCore(name, children.props.value || children.props.checked, type, children);
 }
 
@@ -52,4 +46,3 @@ export function ValidationErrors() {
 
   return null;
 }
-

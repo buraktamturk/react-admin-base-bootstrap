@@ -21,11 +21,7 @@ function is_absolute(url) {
     return !pat.test(url);
 }
 
-type RelativeProps = {
-    children: JSX.Element;
-};
-
-export function Relative({ children }: RelativeProps) {
+export function Relative({ children }) {
     const app = useApp();
 
     if (!children)

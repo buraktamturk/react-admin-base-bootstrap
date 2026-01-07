@@ -1,7 +1,7 @@
 import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
-import { DataContextProvider, RefreshScope, useAuth, useDataTable } from 'react-admin-base';
+import { DataContextProvider, RefreshScope, useAuth, useDataTable, useRefresh } from 'react-admin-base';
 import { FormattedMessage, useIntl } from "react-intl";
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import { Alert, Button, Card, CardFooter, CardHeader, Col, Input, Row, Table } from 'reactstrap';
 import Swal from 'sweetalert2';
 import BootstrapPagination from "./BootstrapPagination";
@@ -31,7 +31,7 @@ type ActionsProp = {
 
 export function Actions({edit, del, rowSpan, children}: ActionsProp) {
     const [api] = useAuth();
-    const [, setParams] = useContext(DataTableContext);
+    const update = useRefresh();
     const intl = useIntl();
     const [ loading, setLoading ] = useState(false);
 
@@ -53,12 +53,12 @@ export function Actions({edit, del, rowSpan, children}: ActionsProp) {
             setLoading(true);
             try {
                 await api.tokenized.delete(del);
-                setParams({}, true);
+                await update?.();
             } finally {
                 setLoading(false);
             }
         }
-    }, [api, del, setParams, intl, setLoading]);
+    }, [api, del, update, intl, setLoading]);
 
     return <td className="min" rowSpan={rowSpan}>
         {edit && <Link to={edit}><Button outline color="primary"><i className="fa fa-pencil-alt"/></Button></Link>}
