@@ -144,9 +144,7 @@ export default function CRUD(props: CRUDProps) {
     const { url, apiUrl, Component, defaultParams, noAdd } = props;
 
     const reload = useCallback(async function() {
-        if (ref.current) {
-            ref.current({});
-        }
+      await ref.current?.();
     }, [ref]);
 
     return <UrlContext.Provider value={url}>

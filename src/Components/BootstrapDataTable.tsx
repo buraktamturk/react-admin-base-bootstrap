@@ -142,13 +142,13 @@ export default function BootstrapTable({url, bordered, noStrip, defaultParams, a
 
     useEffect(function () {
         if (innerRef) {
-            innerRef.current = setParams;
+            innerRef.current = update;
 
             return function () {
                 innerRef.current = null;
             };
         }
-    }, [setParams, innerRef]);
+    }, [update, innerRef]);
 
     const fetchData = useCallback(async function(extraParams) {
         if (body) {
